@@ -30,6 +30,10 @@ header{position:sticky;top:0;z-index:30;backdrop-filter:blur(3px);background:lin
 .halllist li::before{content:counter(hof);min-width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(180deg,#e6c873,#c9a44c);color:#241704;font-family:'Cinzel';font-weight:700;font-size:12px}
 .halllist li:nth-child(1)::before{background:linear-gradient(180deg,#ffe9a8,#e0b54a);box-shadow:0 0 10px rgba(230,200,110,.7)}
 .halllist .hname{font-family:'Song Myung';color:#3a2a16;font-size:15px}
+.patch-sec{margin-bottom:14px}
+.patch-sec h4{font-family:'Cinzel';font-size:14px;color:#7e1f1f;margin:0 0 6px;border-bottom:1px solid rgba(201,164,76,.3);padding-bottom:4px}
+.patch-sec ul{margin:0;padding-left:18px}
+.patch-sec li{font-family:'Song Myung';font-size:13.5px;color:#3a2a16;line-height:1.7;margin-bottom:2px}
 .miniav svg{width:100%;height:100%}
 .tabs{max-width:940px;margin:8px auto 0;display:flex;gap:4px}
 .tab{flex:1;font-family:'Song Myung';font-size:14px;text-align:center;padding:11px 6px;cursor:pointer;color:#bca878;background:rgba(255,255,255,.03);border:1px solid transparent;border-bottom:none;border-radius:9px 9px 0 0;transition:.15s;position:relative}
@@ -128,6 +132,9 @@ h2.tt{font-family:'Song Myung';font-size:clamp(20px,4.2vw,28px);margin:6px 0 14p
 .darkbox{position:relative;background:radial-gradient(circle at 50% 40%,#0a0d11,#020305);border:1px solid #1c2730;border-radius:12px;padding:24px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap;min-height:200px;transition:background .5s}
 .darkbox.lit{background:radial-gradient(circle at 50% 35%,#3c434c,#222931)}
 .lmspray{position:absolute;top:10px;right:14px;font-size:30px;line-height:1;cursor:grab;user-select:none;touch-action:none;z-index:6;text-align:center;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.stepbar{font-size:14px!important;border-left:4px solid #e6c873;background:rgba(230,200,110,.14)!important;color:#3a2a16!important;font-weight:600}
+.attn{animation:attn 1.05s ease-in-out infinite}
+@keyframes attn{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .lmspray .lmtag{display:block;font-size:9.5px;color:#bfeaff;font-family:'Song Myung';margin-top:2px;white-space:nowrap}
 .lmspray.hold{cursor:grabbing}
 .lmspray.spraying::after{content:'💨';position:absolute;left:-16px;top:4px;font-size:18px;opacity:.9;animation:puff .5s ease-out infinite}
@@ -328,6 +335,8 @@ footer .made{color:var(--gold-br);font-size:13px}
     <div style="display:flex;align-items:center;gap:8px">
       <span class="visits" id="visits" title="누적 방문수">👣 …</span>
       <button class="hbtn" onclick="openHall()" title="명탐정 명예의 전당">🏅 명예의 전당</button>
+      <button class="hbtn" id="sndbtn" onclick="SFX.toggle()" title="소리 켜기/끄기">🔊</button>
+      <button class="hbtn" onclick="openPatch()" title="업데이트 내역">📋 패치노트</button>
       <button class="hbtn" onclick="resetState()" title="처음부터 다시 시작">🔄 처음부터</button>
       <div class="miniav" id="miniav"></div>
     </div>
@@ -459,6 +468,62 @@ const CARDS={
 };
 let PREDICT={}, EXPLAIN={};
 
+/* ============ SOUND (Web Audio, no files) ============ */
+const SFX=(function(){
+  let ctx=null, master=null, muted=false;
+  try{ muted=localStorage.getItem('csi_muted')==='1'; }catch(e){}
+  function ensure(){ if(ctx) return ctx; try{ const AC=window.AudioContext||window.webkitAudioContext; ctx=new AC(); master=ctx.createGain(); master.gain.value=muted?0:0.9; master.connect(ctx.destination);}catch(e){ctx=null;} return ctx; }
+  function now(){ return ctx.currentTime; }
+  // basic voice: osc with ADSR + optional pitch glide, routed through a gain
+  function voice(t0,{f=440,f2=null,type='sine',dur=0.3,att=0.01,rel=0.12,vol=0.3,dest=null}={}){
+    if(!ctx) return; const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type; o.frequency.setValueAtTime(f,t0); if(f2) o.frequency.exponentialRampToValueAtTime(Math.max(1,f2),t0+dur);
+    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(vol,t0+att);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+dur+rel);
+    o.connect(g).connect(dest||master); o.start(t0); o.stop(t0+dur+rel+0.02);
+  }
+  function noise(t0,{dur=0.4,vol=0.3,type='lowpass',freq=1200,q=0.7,sweepTo=null}={}){
+    if(!ctx) return; const len=Math.floor(ctx.sampleRate*dur), buf=ctx.createBuffer(1,len,ctx.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
+    const src=ctx.createBufferSource(); src.buffer=buf;
+    const flt=ctx.createBiquadFilter(); flt.type=type; flt.frequency.setValueAtTime(freq,t0); flt.Q.value=q;
+    if(sweepTo) flt.frequency.exponentialRampToValueAtTime(Math.max(20,sweepTo),t0+dur);
+    const g=ctx.createGain(); g.gain.setValueAtTime(vol,t0); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+    src.connect(flt).connect(g).connect(master); src.start(t0); src.stop(t0+dur+0.02);
+  }
+  function chord(t0,freqs,opt={}){ freqs.forEach((f,i)=>voice(t0+(opt.spread? i*opt.spread:0),{...opt,f})); }
+  const cues={
+    ui(){ voice(now(),{f:520,type:'triangle',dur:0.05,vol:0.12,rel:0.05}); },
+    page(){ voice(now(),{f:300,f2:520,type:'sine',dur:0.08,vol:0.12,rel:0.06}); },
+    talk(){ voice(now(),{f:380,f2:300,type:'square',dur:0.05,vol:0.06,rel:0.04}); voice(now()+0.04,{f:300,type:'square',dur:0.04,vol:0.05}); },
+    start(){ const t=now(); chord(t,[392,523.25,659.25],{type:'triangle',dur:0.6,vol:0.16,att:0.05,rel:0.4,spread:0.08}); noise(t,{dur:0.7,vol:0.07,freq:600,sweepTo:2400}); },
+    portal(){ const t=now(); voice(t,{f:220,f2:880,type:'sine',dur:0.4,vol:0.18,att:0.02,rel:0.2}); voice(t+0.02,{f:330,f2:1320,type:'triangle',dur:0.4,vol:0.1}); noise(t,{dur:0.5,vol:0.12,freq:400,sweepTo:3000,q:2}); },
+    enter(){ const t=now(); voice(t,{f:300,f2:140,type:'sine',dur:0.35,vol:0.18,rel:0.2}); noise(t,{dur:0.35,vol:0.1,freq:800,sweepTo:300}); },
+    right(){ const t=now(); voice(t,{f:659.25,type:'sine',dur:0.12,vol:0.18}); voice(t+0.1,{f:987.77,type:'sine',dur:0.18,vol:0.18,rel:0.2}); },
+    wrong(){ const t=now(); voice(t,{f:196,f2:130,type:'sawtooth',dur:0.22,vol:0.12,rel:0.12}); },
+    clue(){ const t=now(); [523.25,659.25,783.99,1046.5].forEach((f,i)=>voice(t+i*0.09,{f,type:'triangle',dur:0.14,vol:0.16,rel:0.18})); noise(t+0.3,{dur:0.5,vol:0.05,freq:5000,q:1}); },
+    fire(){ const t=now(); noise(t,{dur:0.5,vol:0.14,freq:1400,sweepTo:500,q:0.6}); voice(t,{f:120,f2:60,type:'sawtooth',dur:0.3,vol:0.06}); },
+    cover(){ const t=now(); voice(t,{f:520,f2:200,type:'sine',dur:0.18,vol:0.12,rel:0.1}); noise(t,{dur:0.18,vol:0.08,freq:1000}); },
+    lift(){ voice(now(),{f:300,f2:760,type:'sine',dur:0.22,vol:0.12,rel:0.12}); },
+    lightsoff(){ const t=now(); voice(t,{f:600,type:'square',dur:0.04,vol:0.1}); voice(t+0.05,{f:160,f2:70,type:'sine',dur:0.9,vol:0.14,att:0.02,rel:0.5}); noise(t+0.05,{dur:0.9,vol:0.05,freq:300,sweepTo:120}); },
+    glow(){ const t=now(); chord(t,[1046.5,1396.9,2093],{type:'sine',dur:0.7,vol:0.1,att:0.04,rel:0.5,spread:0.06}); noise(t,{dur:0.8,vol:0.04,freq:6000,q:1}); },
+    uvon(){ voice(now(),{f:90,type:'sawtooth',dur:0.5,vol:0.05,att:0.05,rel:0.3}); },
+    sparkle(){ const t=now(); [1568,2093,2637].forEach((f,i)=>voice(t+i*0.05,{f,type:'sine',dur:0.12,vol:0.09,rel:0.15})); },
+    oracle(){ const t=now(); chord(t,[523.25,783.99,1046.5,1318.5],{type:'sine',dur:1.1,vol:0.1,att:0.15,rel:0.7,spread:0.05}); noise(t,{dur:1.1,vol:0.04,freq:3000,sweepTo:6000,q:1}); },
+    motive(){ const t=now(); voice(t,{f:147,type:'sawtooth',dur:1.0,vol:0.1,att:0.1,rel:0.6}); voice(t+0.04,{f:220,type:'sine',dur:1.0,vol:0.07,att:0.2,rel:0.6}); },
+    victory(){ const t=now(); [523.25,659.25,783.99,1046.5].forEach((f,i)=>voice(t+i*0.12,{f,type:'triangle',dur:0.5,vol:0.18,rel:0.4})); chord(t+0.48,[523.25,659.25,783.99,1046.5],{type:'sine',dur:1.0,vol:0.14,att:0.03,rel:0.8}); noise(t,{dur:1.2,vol:0.05,freq:4000,q:1}); },
+    dark(){ const t=now(); voice(t,{f:110,f2:55,type:'sine',dur:1.2,vol:0.16,att:0.05,rel:0.7}); noise(t,{dur:1.0,vol:0.06,freq:500,sweepTo:120}); },
+  };
+  return {
+    play(name){ if(muted) return; if(!ensure()) return; if(ctx.state==='suspended') ctx.resume(); const c=cues[name]; if(c){ try{c();}catch(e){} } },
+    unlock(){ if(!ensure()) return; if(ctx.state==='suspended') ctx.resume(); },
+    toggle(){ muted=!muted; try{localStorage.setItem('csi_muted',muted?'1':'0');}catch(e){} if(master) master.gain.value=muted?0:0.9; const b=document.getElementById('sndbtn'); if(b) b.textContent=muted?'🔇':'🔊'; return muted; },
+    isMuted(){ return muted; }
+  };
+})();
+// 첫 사용자 제스처에서 오디오 잠금 해제 (브라우저 자동재생 정책)
+['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>SFX.unlock(),{once:true}));
+
 /* ============ STATE ============ */
 let D={name:'',skin:'#e8b690',hair:'#5a3a1f',hat:'detective',glasses:'round',shirt:'#f4f1ea',pants:'#2c3e6b',accent:'#b53636',longHair:false,beard:false};
 let CLUES={candle:false,polar:false,luminol:false,photo:false};
@@ -498,7 +563,7 @@ function renderCreator(){
 }
 function onName(v){D.name=v.trim();$('#avName').textContent=D.name||'이름을 입력하세요';$('#startBtn').disabled=!D.name;}
 function setOpt(k,v){D[k]=v;renderRoot();}
-function startGame(){if(!D.name)return;APP.stage='intro';APP.cutI=0;$('#tabs').style.display='none';saveState();updateMini();renderRoot();}
+function startGame(){if(!D.name)return;SFX.play('start');APP.stage='intro';APP.cutI=0;$('#tabs').style.display='none';saveState();updateMini();renderRoot();}
 
 /* ============ INTRO CUTSCENE ============ */
 const PRIEST={skin:'#e6c39a',hair:'#d8d8d8',hat:'hood',shirt:'#efe9da',pants:'#cfc6b0',accent:'#c9a44c',beard:true};
@@ -534,13 +599,13 @@ function renderIntro(){
       <button class="cut-btn cut-next" onclick="${last?'finishIntro()':'cutNext()'}">${last?'▶ 수사 시작':'다음 ▶'}</button>
     </div></div>`;
 }
-function cutNext(){APP.cutI++;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function cutNext(){SFX.play('page');APP.cutI++;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
 function cutSkip(){APP.cutI=SCENES().length-1;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
-function finishIntro(){applyMood('dark');APP.stage='app';APP.tab='story';$('#tabs').style.display='flex';saveState();updateMini();renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function finishIntro(){SFX.play('dark');applyMood('dark');APP.stage='app';APP.tab='story';$('#tabs').style.display='flex';saveState();updateMini();renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
 function replayIntro(){APP.stage='intro';APP.cutI=0;$('#tabs').style.display='none';renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
 
 /* ============ TABS ============ */
-function setTab(t){APP.tab=t;if(t==='lab')APP.labView='list';renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function setTab(t){SFX.play('ui');APP.tab=t;if(t==='lab')APP.labView='list';renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
 function syncTabs(){document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===APP.tab));updateBadge();}
 
 /* ============ STORY ============ */
@@ -587,12 +652,12 @@ function pickSuspect(id){
   document.querySelectorAll('.scard.pick').forEach(c=>c.classList.remove('sel'));
   document.querySelector(`.scard[data-id="${id}"]`).classList.add('sel');
   const fb=$('#acfb');
-  if(id===CULPRIT){fb.className='fb ok show';fb.innerHTML=`🎉 정답입니다, 수사관 ${D.name}! 범인은 <b>카밀라</b> — 자외선에 반응하는 광변색 옷의 비밀이 밝혀졌습니다. ‘솔리스의 보석’을 되찾고 로마의 평화를 지켰습니다!`;
+  if(id===CULPRIT){SFX.play('victory');fb.className='fb ok show';fb.innerHTML=`🎉 정답입니다, 수사관 ${D.name}! 범인은 <b>카밀라</b> — 자외선에 반응하는 광변색 옷의 비밀이 밝혀졌습니다. ‘솔리스의 보석’을 되찾고 로마의 평화를 지켰습니다!`;
     window.won=true; applyMood('bright');
     const ei=$('#endimg'); if(ei) ei.innerHTML=`<div class="imgslot" style="aspect-ratio:16/9;margin-top:14px">${imgSlot('victory','엔딩 — 보석을 되찾아 다시 밝아진 로마')}</div>`+renderCertificate();
     saveState(); setTimeout(openMotivePopup,700); registerDetective();
   }
-  else{const why={lucius:'루시우스는 사건 당일 밤 대장간에서 일한 알리바이가 있습니다 (수사 #1).',gaius:'가이우스의 절구는 뭉툭합니다. 진짜 혈흔은 원형=날카로운 도구였죠 (수사 #2·#3).',flavius:'플라비우스의 옷은 평범한 염색이라 빛과 무관하게 색이 그대로입니다 (수사 #4).'}[id];
+  else{SFX.play('wrong');const why={lucius:'루시우스는 사건 당일 밤 대장간에서 일한 알리바이가 있습니다 (수사 #1).',gaius:'가이우스의 절구는 뭉툭합니다. 진짜 혈흔은 원형=날카로운 도구였죠 (수사 #2·#3).',flavius:'플라비우스의 옷은 평범한 염색이라 빛과 무관하게 색이 그대로입니다 (수사 #4).'}[id];
     fb.className='fb no show';fb.innerHTML='아직 아닙니다. '+why+' 단서를 다시 종합해 보세요.';}
 }
 
@@ -604,7 +669,7 @@ function renderLab(){
   if(APP.labView==='luminol') return renderLuminol();
   if(APP.labView==='photo') return renderPhoto();
 }
-function openSim(id){
+function openSim(id){SFX.play('enter');
   APP.labView=id; renderRoot();
   const bb=document.querySelector('#stage .backbtn');
   if(bb && !document.getElementById('cardBtn')) bb.insertAdjacentHTML('afterend',` <button class="backbtn" id="cardBtn" onclick="openTechCard('${id}')">📋 수사기법 카드</button>`);
@@ -622,7 +687,7 @@ function openTechCard(id){const c=CARDS[id];
       <p class="tiny">저장한 예측은 <b>단서노트</b>의 해당 수사노트에 기록됩니다.</p></div>`);
 }
 function savePredict(id){const t=document.getElementById('predInput'); PREDICT[id]=t?t.value.trim():''; saveState(); updateBadge(); closeModal();}
-function collectClue(id,msg){CLUES[id]=true;saveState();updateBadge();
+function collectClue(id,msg){SFX.play('clue');CLUES[id]=true;saveState();updateBadge();
   if(cluesCount()===4) setTimeout(openDonePopup,800);
   return `<div class="fb ok show" style="margin-top:16px">📒 단서노트에 <b>${NOTES[id].title}</b> 원리가 정리되었습니다!<br>${msg||''}</div>
   <div class="btnrow"><button class="btn ghost" onclick="backToLab()">← 실험실로</button><button class="btn gold" onclick="setTab('note')">📒 단서노트 보기</button></div>`;
@@ -630,7 +695,7 @@ function collectClue(id,msg){CLUES[id]=true;saveState();updateBadge();
 function openDonePopup(){openModal(`<div class="eyebrow">CASE READY</div><h2 class="tt">🎉 네 가지 수사를 모두 마쳤습니다!</h2>
   <p class="lead">이제 <b>단서노트</b>에서 단서와 나의 예측을 정리한 뒤, <b>‘범인 지목’ 탭</b>으로 가서 진범을 지목하세요.<br>로마 제국의 빛을 되찾을 시간입니다!</p>
   <div class="btnrow"><button class="btn ghost" onclick="closeModal();setTab('note')">📒 단서 정리하기</button><button class="btn gold" onclick="closeModal();setTab('verdict')">⚖️ 범인 지목하러 가기</button></div>`);}
-function openMotivePopup(){openModal(`<div class="eyebrow">THE TRUTH · 사건의 진실</div><h2 class="tt">카밀라의 동기</h2>
+function openMotivePopup(){SFX.play('motive');openModal(`<div class="eyebrow">THE TRUTH · 사건의 진실</div><h2 class="tt">카밀라의 동기</h2>
   <p class="lead">카밀라는 햇빛을 받으면 피부가 붉게 타오르는 <b>햇빛 알러지(광과민증)</b>를 앓고 있었다. 태양신의 보석 <b>‘솔리스’</b>가 빛나는 한, 그녀는 빛으로 가득한 신전 행사에 끝없이 불려 나가야 했다.</p>
   <p class="lead" style="margin-top:10px">빛을 견딜 수 없었던 그녀는 결국 보석을 훔쳤고, <b>자외선에 색이 변하는 옷</b>으로 정체를 숨기려 했다. 그러나 바로 그 옷이 — 그리고 빛을 다루는 과학이 — 결정적인 단서가 되었다.</p>
   <div class="btnrow" style="justify-content:center"><button class="btn gold" onclick="closeModal()">🏛️ 표창장 받기</button></div>`);}
@@ -682,7 +747,7 @@ function renderMapWorld(){
    </div>`;
 }
 function placePlayer(){const p=document.getElementById('player'); if(p&&MAP){p.style.left=MAP.x+'%';p.style.top=MAP.y+'%';}}
-function mapTravel(to){APP.mapI=to;saveState();renderRoot();}
+function mapTravel(to){SFX.play('portal');APP.mapI=to;saveState();renderRoot();}
 function mapClickPortal(idx){const m=WORLD[APP.mapI||0],p=m.portals[idx]; if(portalLocked(p)){mapMsg('🔒 이전 단서를 먼저 모으세요');return;} mapTravel(p.to);}
 function mapMsg(t){const pr=document.getElementById('mapprompt'); if(pr){pr.dataset.k='msg';pr.innerHTML='<span class="mapmsg">'+t+'</span>';}}
 function mapInit(){
@@ -691,8 +756,11 @@ function mapInit(){
   MAP={x:m.start[0],y:m.start[1],keys:{},cd:24,raf:0};
   placePlayer(); bindMapKeys();
   ['up','down','left','right'].forEach(dir=>{const b=view.parentElement.querySelector('.dbtn.'+dir); if(!b)return;
-    const on=e=>{e.preventDefault(); if(MAP)MAP.keys[dir]=true;}; const off=()=>{if(MAP)MAP.keys[dir]=false;};
-    b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointerleave',off); b.addEventListener('pointercancel',off);});
+    const on=e=>{e.preventDefault(); if(MAP)MAP.keys[dir]=true; try{b.setPointerCapture(e.pointerId);}catch(_){}};
+    const off=()=>{if(MAP)MAP.keys[dir]=false;};
+    b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointercancel',off); b.addEventListener('lostpointercapture',off);
+    b.addEventListener('contextmenu',ev=>ev.preventDefault());});
+  if(!window.__mapClear){window.__mapClear=true; const clr=()=>{if(MAP)MAP.keys={};}; window.addEventListener('blur',clr); document.addEventListener('visibilitychange',()=>{if(document.hidden)clr();});}
   function loop(){
     if(!view.isConnected){cancelAnimationFrame(MAP.raf);return;}
     const spd=0.6; let dx=0,dy=0;
@@ -715,13 +783,13 @@ function checkZones(m){
 }
 /* ----- NPC dialogue ----- */
 let DLG=null;
-function npcOpen(mi,ni){ const npc=WORLD[mi].npcs[ni]; DLG={lines:npcLines(npc.role),name:npc.name,cfg:npc.cfg,i:0}; dlgRender(); }
+function npcOpen(mi,ni){ SFX.play('talk'); const npc=WORLD[mi].npcs[ni]; DLG={lines:npcLines(npc.role),name:npc.name,cfg:npc.cfg,i:0}; dlgRender(); }
 function dlgRender(){ const l=DLG.lines[DLG.i], last=DLG.i>=DLG.lines.length-1;
   openModal(`<div class="speech" style="margin-top:0;align-items:flex-start"><div class="sav">${DLG.cfg?mc(DLG.cfg):'📜'}</div>
      <div class="bub"><b style="color:#7e1f1f;font-family:Cinzel;font-size:12px;letter-spacing:1px">${DLG.name}</b><br>${l}</div></div>
    <div class="cut-progress" style="margin-top:8px">${DLG.i+1} / ${DLG.lines.length}</div>
    <div class="btnrow" style="justify-content:flex-end">${last?'<button class="btn gold" onclick="closeModal()">닫기</button>':'<button class="btn gold" onclick="dlgNext()">다음 ▶</button>'}</div>`); }
-function dlgNext(){ DLG.i++; dlgRender(); }
+function dlgNext(){ SFX.play('talk'); DLG.i++; dlgRender(); }
 function npcLines(role){
   const n=cluesCount(), nm=esc(D.name);
   if(role==='priest'){
@@ -768,9 +836,9 @@ function renderCandle(){
         </div>
       </div>
       <div class="btnrow" style="justify-content:center">
-        <button class="btn gold" id="bLight" onclick="e1Light()">🔥 불 붙이기</button>
-        <button class="btn" id="bCover" onclick="e1Cover()" disabled>🥛 컵으로 덮기</button>
-        <button class="btn ghost" id="bLift" onclick="e1Lift()" disabled>⬆️ 컵 들어올리기</button>
+        <button class="btn gold" id="bLight" onclick="SFX.play('fire');e1Light()">🔥 불 붙이기</button>
+        <button class="btn" id="bCover" onclick="SFX.play('cover');e1Cover()" disabled>🥛 컵으로 덮기</button>
+        <button class="btn ghost" id="bLift" onclick="SFX.play('lift');e1Lift()" disabled>⬆️ 컵 들어올리기</button>
       </div>
      </div>
      <div class="subpanel cg-sim">
@@ -825,7 +893,7 @@ function e1Clue(){
     <div class="choices"><div class="choice" onclick="e1Pick(this,false)">가이우스 (약제사)</div><div class="choice" onclick="e1Pick(this,true)">루시우스 (대장장이)</div><div class="choice" onclick="e1Pick(this,false)">카밀라 (귀족)</div></div>
     <div class="fb" id="e1fb"></div></div>`;
 }
-function e1Pick(el,ok){const fb=$('#e1fb');
+function e1Pick(el,ok){SFX.play(ok?'right':'wrong');const fb=$('#e1fb');
   if(ok){el.classList.add('right');document.querySelectorAll('#e1after .choice').forEach(c=>c.style.pointerEvents='none');
     fb.className='fb ok show';fb.innerHTML='정답! 무거운 석판도 <b>압력 차이</b>로 열렸으니 대장장이의 괴력은 필요 없었고, 그날 밤 루시우스는 대장간에 있었다 → <b>알리바이 성립</b>.';
     fb.insertAdjacentHTML('afterend', speechBubble('lucius',`"고맙소, 수사관 ${D.name||'님'}! 그날 밤 난 대장간에서 일하고 있었소. 과학으로 누명을 벗겨주어 정말 고맙소!"`)+collectClue('candle','대기압·샤를의 법칙이 정리되었습니다.'));
@@ -968,7 +1036,7 @@ function polQuizHTML(){
      <div class="choices"><div class="choice" onclick="polQ(this,2,true)">나란할 때 (0°)</div><div class="choice" onclick="polQ(this,2,false)">비스듬할 때 (45°)</div><div class="choice" onclick="polQ(this,2,false)">직각일 때 (90°)</div></div><div class="fb" id="pq2"></div></div>
    <div id="polClue"></div>`;
 }
-function polQ(el,n,ok){const fb=document.getElementById('pq'+n);
+function polQ(el,n,ok){SFX.play(ok?'oracle':'wrong');const fb=document.getElementById('pq'+n);
   if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
     if(n===1){fb.innerHTML='맞아요! 진동 방향이 막혀 빛이 모두 차단됩니다.';document.getElementById('q2box').style.display='block';}
     if(n===2){fb.innerHTML='정답! 두 편광판이 나란하면 빛이 그대로 통과해 가장 밝습니다.';
@@ -983,13 +1051,13 @@ function renderLuminol(){
   <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #3</div><h2 class="tt">루미놀 — 진짜 혈흔을 찾아라</h2>
     <p class="lead" style="font-size:14px">범죄 현장에 <b>원 형태</b>와 <b>네모 형태</b>의 붉은 흔적이 있다. 하나는 진짜 피, 하나는 색소일 뿐. 어둠 상자 속에서 <b>루미놀</b>을 직접 뿌려 진짜 혈흔을 찾아라.</p></div>
   <div class="lab">
-    <div class="hint" id="lmhint">① 먼저 <b>💡 불 끄기</b>로 어둠 상자를 캄캄하게 만드세요. (화학발광은 어두워야 보여요!)</div>
+    <div class="hint stepbar" id="lmhint">🟡 <b>1단계</b> · 아래 <b>[💡 불 끄기]</b> 버튼을 누르세요. (화학발광은 어두워야 보여요!)</div>
     <div class="darkbox lit" id="lmbox">
       <div class="spec"><div class="bshape circle" id="bc">원형<br>흔적</div><div class="cap">원 모양 접시</div></div>
       <div class="spec"><div class="bshape square" id="bs">네모<br>흔적</div><div class="cap">네모 모양 접시</div></div>
       <div class="lmspray" id="lmspray">🧴<span class="lmtag">루미놀<br>끌어서 분무</span></div>
     </div>
-    <div class="btnrow" style="justify-content:center"><button class="btn" id="lmLightBtn" onclick="lmLightsOff()">💡 불 끄기</button></div>
+    <div class="btnrow" style="justify-content:center"><button class="btn attn" id="lmLightBtn" onclick="lmLightsOff()">💡 불 끄기</button></div>
     <div id="lmafter"></div>
     <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.luminol,'루미놀 실험 영상')}</div>
     <div class="exbox" style="margin-top:16px"><div class="t">💡 화학발광은 어디에 쓰일까?</div><ul>${NOTES.luminol.examples.map(x=>`<li>${x}</li>`).join('')}</ul></div>
@@ -1006,14 +1074,17 @@ function lmInit(){
   const up=()=>{ LM.drag=false; sp.classList.remove('hold','spraying'); window.removeEventListener('pointermove',move); window.removeEventListener('pointerup',up); };
   sp.addEventListener('pointerdown',e=>{ e.preventDefault(); if(LM.lights){lmFlash('먼저 💡 불 끄기를 누르세요!');return;} LM.drag=true; sp.style.right='auto'; sp.classList.add('hold'); window.addEventListener('pointermove',move); window.addEventListener('pointerup',up); });
 }
-function lmLightsOff(){ if(!LM) return; LM.lights=false; document.getElementById('lmbox').classList.remove('lit');
-  document.getElementById('lmLightBtn').disabled=true; document.getElementById('lmhint').innerHTML='② <b>루미놀 분무기(🧴)</b>를 끌어다 흔적 위에 가져다 대세요.'; }
+function lmLightsOff(){ if(!LM) return; SFX.play('lightsoff'); LM.lights=false; document.getElementById('lmbox').classList.remove('lit');
+  const btn=document.getElementById('lmLightBtn'); btn.disabled=true; btn.classList.remove('attn');
+  const sp=document.getElementById('lmspray'); if(sp) sp.classList.add('attn');
+  document.getElementById('lmhint').innerHTML='🟢 <b>2단계</b> · 🧴 <b>루미놀 분무기를 손가락으로 끌어</b> 흔적 위에 올려놓으세요.'; }
 function lmFlash(msg){ const h=document.getElementById('lmhint'); const old=h.innerHTML; h.innerHTML='<b style="color:#ffb3b3">'+msg+'</b>'; setTimeout(()=>{ if(LM&&!LM.glow&&h) h.innerHTML=old; },1500); }
 function lmCheck(x,y,r){
   const bc=document.getElementById('bc'),bs=document.getElementById('bs'); if(!bc) return;
   const a=bc.getBoundingClientRect(), cx=a.left-r.left, cy=a.top-r.top;
-  if(x>cx&&x<cx+a.width&&y>cy&&y<cy+a.height&&!LM.glow){ LM.glow=true; bc.classList.add('glow'); bc.innerHTML='💠<br>청색 발광!';
-    document.getElementById('lmhint').innerHTML='<b style="color:#37e2ff">원형 흔적이 청색으로 발광 — 진짜 혈흔!</b>';
+  if(x>cx&&x<cx+a.width&&y>cy&&y<cy+a.height&&!LM.glow){ LM.glow=true; SFX.play('glow'); bc.classList.add('glow'); bc.innerHTML='💠<br>청색 발광!';
+    const sp=document.getElementById('lmspray'); if(sp) sp.classList.remove('attn');
+    document.getElementById('lmhint').innerHTML='✅ 원형 흔적이 청색으로 발광 — 진짜 혈흔! 아래 <b>퀴즈</b>를 풀어 단서를 얻으세요. ⬇️';
     document.getElementById('lmafter').innerHTML=lmQuizHTML();
     setTimeout(()=>document.getElementById('lmafter').scrollIntoView({behavior:'smooth',block:'center'}),60); }
   const b=bs.getBoundingClientRect(), sx=b.left-r.left, sy=b.top-r.top;
@@ -1023,7 +1094,7 @@ function lmQuizHTML(){
   return `<div class="qcard"><div class="q">Q. 진짜 혈흔은 <b>원형</b>. 편광 단서의 규칙(날카로움→원형)에 따르면 범행 도구는?</div>
     <div class="choices"><div class="choice" onclick="lmPick(this,false)">뭉툭한 도구</div><div class="choice" onclick="lmPick(this,true)">날카로운 도구</div></div><div class="fb" id="lmfb"></div></div>`;
 }
-function lmPick(el,ok){const fb=$('#lmfb');
+function lmPick(el,ok){SFX.play(ok?'right':'wrong');const fb=$('#lmfb');
   if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
     fb.innerHTML='정답! 날카로운 도구 → <b>플라비우스·카밀라</b>로 압축. 뭉툭한 절구를 든 <b>가이우스</b>는 제외됩니다.';
     fb.insertAdjacentHTML('afterend', speechBubble('gaius',`"수사관 ${D.name||'님'}, 제 절구는 뭉툭하답니다. 누명을 풀어주셔서 정말 감사합니다!"`)+collectClue('luminol','루미놀 화학발광 원리가 정리되었습니다.'));
@@ -1037,12 +1108,12 @@ function renderPhoto(){
   <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #4</div><h2 class="tt">광변색 — 태양 아래 진실</h2>
     <p class="lead" style="font-size:14px"><b>사제의 증언:</b> “범인은 분명 알록달록한 옷을 입고 있었는데, 보석이 사라지고 세상이 어두워지니 옷 색깔이 점점 하얗게 변했어요…” 남은 두 용의자의 옷과 보석을 자외선으로 직접 비춰 보라.</p></div>
   <div class="lab">
-    <div class="hint" id="phhint">🔦 <b>자외선 손전등</b>을 끌어서 옷·보석 위로 가져가 보세요. (빛을 비출 때와 치울 때를 비교!)</div>
+    <div class="hint stepbar" id="phhint">🟡 <b>할 일</b> · 🔦 자외선 손전등을 <b>손가락으로 끌어</b> 두 옷·보석 위로 가져가세요. 빛을 <b>비출 때</b>와 <b>치울 때</b>를 비교해 보세요!</div>
     <div class="uvstage" id="uvstage">
       <div class="garments">
         <div><div class="cloth guard" id="clG"></div><div class="gcap">플라비우스(경비병)의 옷</div></div>
         <div><div class="cloth noble-dark" id="clN"></div><div class="gcap">카밀라(귀족)의 옷</div></div></div>
-      <div class="uvbeam" id="uvbeam">🔦<span class="uvtag">끌어서 비추기</span></div>
+      <div class="uvbeam attn" id="uvbeam">🔦<span class="uvtag">끌어서 비추기</span></div>
     </div>
     <div id="phafter"></div>
     <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.photo,'광변색 안료 실험 영상')}</div>
@@ -1060,18 +1131,18 @@ function uvInit(){
     const N=document.getElementById('clN'), a=N.getBoundingClientRect(), nx=a.left-r.left, ny=a.top-r.top;
     const over = x>nx-12 && x<nx+a.width+12 && y>ny-12 && y<ny+a.height+12;
     setNoble(over);
-    if(over && !UV.lit){ UV.lit=true; revealPhotoQuiz(); } };
+    if(over && !UV.lit){ UV.lit=true; SFX.play('sparkle'); revealPhotoQuiz(); } };
   const up=()=>{ UV.drag=false; bm.classList.remove('on'); setNoble(false); window.removeEventListener('pointermove',move); window.removeEventListener('pointerup',up); };
-  bm.addEventListener('pointerdown',e=>{ e.preventDefault(); UV.drag=true; bm.style.right='auto'; bm.classList.add('on'); window.addEventListener('pointermove',move); window.addEventListener('pointerup',up); });
+  bm.addEventListener('pointerdown',e=>{ e.preventDefault(); UV.drag=true; SFX.play('uvon'); bm.style.right='auto'; bm.classList.remove('attn'); bm.classList.add('on'); window.addEventListener('pointermove',move); window.addEventListener('pointerup',up); });
 }
 function revealPhotoQuiz(){
   if(document.getElementById('phafter').innerHTML) return;
-  document.getElementById('phhint').innerHTML='👀 귀족의 옷·보석은 <b>자외선을 비출 때만</b> 알록달록해지고, 빛을 치우면 다시 하얘집니다! 경비병의 옷은 변화가 없네요.';
+  document.getElementById('phhint').innerHTML='✅ 보셨나요? 귀족의 옷·보석은 <b>자외선을 비출 때만</b> 알록달록해지고, 빛을 치우면 다시 하얘집니다! 경비병 옷은 그대로죠. 아래 <b>퀴즈</b>에서 범인의 옷을 고르세요. ⬇️';
   document.getElementById('phafter').innerHTML=`<div class="qcard"><div class="q">Q. 경비병 옷은 항상 알록달록(평범한 염색), 귀족 옷은 빛이 있을 땐 알록달록·없으면 하얗게 변합니다. 사제 증언과 일치하는 <b>범인의 옷</b>은?</div>
     <div class="choices"><div class="choice" onclick="phPick(this,false)">경비병의 옷</div><div class="choice" onclick="phPick(this,true)">귀족의 옷</div></div><div class="fb" id="phfb"></div></div>`;
   setTimeout(()=>document.getElementById('phafter').scrollIntoView({behavior:'smooth',block:'center'}),60);
 }
-function phPick(el,ok){const fb=$('#phfb');
+function phPick(el,ok){SFX.play(ok?'right':'wrong');const fb=$('#phfb');
   if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
     fb.innerHTML='정답! 자외선에 색이 변하는 <b>광변색 옷 = 카밀라</b>. 평범한 염색옷을 입은 <b>플라비우스</b>는 제외됩니다. 이제 범인은 한 명!';
     fb.insertAdjacentHTML('afterend', speechBubble('flavius',`"수사관 ${D.name||'님'}, 제 옷은 빛이 있어도 색이 그대로였지요. 의심을 거둬주셔서 감사합니다!"`)+collectClue('photo','광변색 광화학 반응 원리가 정리되었습니다. 스토리 탭에서 범인을 지목하세요!'));
@@ -1184,6 +1255,7 @@ async function loadVisits(){
   }catch(e){ el.style.display='none'; }
 }
 loadVisits();
+(function(){const b=document.getElementById('sndbtn'); if(b&&SFX.isMuted()) b.textContent='🔇';})();
 // ===== 명탐정 명예의 전당 (Supabase) =====
 async function registerDetective(){
   if(!_sb) return;
@@ -1191,7 +1263,7 @@ async function registerDetective(){
   try{ await _sb.rpc('add_detective',{detective_name:(D.name||'이름 없는 수사관')}); localStorage.setItem('csi_listed','1'); }catch(e){}
 }
 async function openHall(){
-  openModal(`<div class="eyebrow">HALL OF FAME</div><h2 class="tt">🏅 명탐정 명예의 전당</h2>
+  SFX.play('ui'); openModal(`<div class="eyebrow">HALL OF FAME</div><h2 class="tt">🏅 명탐정 명예의 전당</h2>
     <p class="lead" style="font-size:13px">‘솔리스의 보석’을 되찾고 로마의 평화를 지킨 명탐정들입니다.</p>
     <div id="hallbody" style="margin-top:10px;max-height:46vh;overflow:auto">불러오는 중…</div>
     <div class="btnrow" style="justify-content:flex-end;margin-top:12px"><button class="btn gold" onclick="closeModal()">닫기</button></div>`);
@@ -1203,6 +1275,23 @@ async function openHall(){
     if(!data||!data.length){ body.innerHTML='<span class="mapmsg">아직 사건을 해결한 명탐정이 없습니다. 첫 번째 주인공이 되어 보세요!</span>'; return; }
     body.innerHTML='<ol class="halllist">'+data.map(d=>`<li><span class="hname">${esc(d.name)}</span></li>`).join('')+'</ol>';
   }catch(e){ body.innerHTML='<span class="mapmsg">명단을 불러오지 못했습니다.</span>'; }
+}
+function openPatch(){
+  SFX.play('ui');
+  const sec=(t,items)=>`<div class="patch-sec"><h4>${t}</h4><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  openModal(`<div class="eyebrow">UPDATE · v3.0</div><h2 class="tt">📋 패치노트</h2>
+    <p class="lead" style="font-size:13px">탐험 · 스토리 · 사운드 대규모 업데이트</p>
+    <div style="max-height:52vh;overflow:auto;margin-top:6px;text-align:left">
+    ${sec('🗺️ 맵 탐험 시스템 (신규)',['실험실 목록이 탐정이 직접 걸어다니는 맵으로 바뀜','신전 광장·봉인된 문·빛의 신전·지하 제단·연회장 5개 장소','PC는 WASD·방향키, 모바일은 D-패드로 이동','파란 소용돌이 포탈로 이동, 🔬 지점에서 실험 시작'])}
+    ${sec('🔒 순서대로 열리는 포탈',['양초 → 편광 → 루미놀 → 광변색 순으로 단계적 해금','아직 갈 수 없는 곳은 🔒로 안내'])}
+    ${sec('🧑‍🤝‍🧑 NPC 대화 (신규)',['가까이 가면 💬 대화 버튼 등장','광장의 사제가 다음 행선지를 안내','각 장소 NPC가 사건 분위기를 살린 대사 제공'])}
+    ${sec('📖 스토리 연결 강화',['양초=현장 진입 압력 트릭, 편광=빛의 신 솔의 신탁','네 실험이 하나의 추리 줄기로 연결','엔딩에서 범인의 동기(햇빛 알러지) 공개'])}
+    ${sec('🔊 사운드 추가 (신규)',['장면별 신비로운 합성 효과음(외부 파일 없음)','포탈·대화·단서·정답·발광·신탁·승리 팡파르 등','헤더 🔊/🔇 버튼으로 켜고 끄기'])}
+    ${sec('🧪 실험 조작 개선',['루미놀: 불 끄기 → 분무기를 끌어 흔적에 대기','광변색: 손전등을 끌어 비추고, 치우면 다시 하얘지는 가역 반응','단계 안내 배너로 다음 할 일 명확히'])}
+    ${sec('🏅 명예의 전당 · 👣 방문자 수',['범인을 잡으면 명탐정 명단에 이름 등록','헤더 버튼으로 기록·누적 방문수 확인'])}
+    ${sec('🛠️ 기타 / 버그 수정',['컵 모양 수정(위 막힘·아래 뚫림)','모바일 D-패드 조작 안정화','어디서든 🔄 처음부터로 재시작'])}
+    </div>
+    <div class="btnrow" style="justify-content:flex-end;margin-top:12px"><button class="btn gold" onclick="closeModal()">닫기</button></div>`);
 }
 </script>
 </body>
