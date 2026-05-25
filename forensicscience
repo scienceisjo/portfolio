@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSI 과학수사대 — 로마의 사라진 보석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Gowun+Batang:wght@400;700&family=Nanum+Brush+Script&family=Song+Myung&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2018;--ink-soft:#4a3a28;--parch:#ece0c4;--parch-d:#dccaa2;--bg:#120d08;--gold:#c9a44c;--gold-br:#e6c873;--crimson:#b53636;--crimson-d:#7e1f1f;--uv:#8b3df0;--glow:#37e2ff;--shadow:0 18px 40px rgba(0,0,0,.55);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Gowun Batang',serif;color:var(--ink);min-height:100%;overflow-x:hidden;
+  background:radial-gradient(1200px 700px at 18% -10%,#3a2a1b 0%,transparent 55%),radial-gradient(1000px 800px at 110% 120%,#2a1d12 0%,transparent 60%),linear-gradient(160deg,#160f09 0%,#241910 55%,#140d08 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;background-image:repeating-linear-gradient(92deg,rgba(0,0,0,.06) 0 2px,transparent 2px 7px);mix-blend-mode:multiply}
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 16px 70px}
+header{position:sticky;top:0;z-index:30;backdrop-filter:blur(3px);background:linear-gradient(180deg,rgba(18,12,7,.96),rgba(18,12,7,.8) 80%,transparent);padding:10px 16px 0;border-bottom:1px solid rgba(201,164,76,.22)}
+.hbar{max-width:940px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.seal{width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d94c4c,#7e1f1f 70%);border:2px solid var(--gold);display:grid;place-items:center;color:#fff;font-family:'Cinzel';font-weight:900;font-size:11px;transform:rotate(-8deg);box-shadow:var(--shadow)}
+.brand h1{font-family:'Cinzel';font-weight:700;color:var(--gold-br);font-size:14px;letter-spacing:1px;white-space:nowrap}
+.brand h1 small{display:block;font-family:'Song Myung';color:#e8d9b8;font-weight:400;font-size:11px;letter-spacing:0}
+.miniav{width:34px;height:42px;flex:0 0 34px;background:rgba(0,0,0,.2);border-radius:6px;border:1px solid rgba(201,164,76,.3);overflow:hidden;display:grid;place-items:center}
+.miniav svg{width:100%;height:100%}
+.tabs{max-width:940px;margin:8px auto 0;display:flex;gap:4px}
+.tab{flex:1;font-family:'Song Myung';font-size:14px;text-align:center;padding:11px 6px;cursor:pointer;color:#bca878;background:rgba(255,255,255,.03);border:1px solid transparent;border-bottom:none;border-radius:9px 9px 0 0;transition:.15s;position:relative}
+.tab .b{position:absolute;top:5px;right:8px;background:var(--crimson);color:#fff;font-size:10px;border-radius:9px;padding:0 6px;font-family:'Cinzel'}
+.tab.on{color:#241704;background:linear-gradient(180deg,#e6c873,#c9a44c);border-color:#8a6e2f;font-weight:700}
+.tab:hover:not(.on){color:#e8d9b8;background:rgba(255,255,255,.06)}
+#stage{animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.parch{position:relative;border-radius:6px;color:var(--ink);padding:24px 22px;margin:18px 0;background:radial-gradient(120% 100% at 10% 0%,#f3e8cd 0%,var(--parch) 40%,var(--parch-d) 100%);box-shadow:var(--shadow),inset 0 0 0 1px rgba(120,90,40,.25)}
+.parch::after{content:"";position:absolute;inset:9px;border:1.5px double #5a4427;border-radius:4px;pointer-events:none;opacity:.5}
+.parch.tight{padding:18px}
+.eyebrow{font-family:'Cinzel';letter-spacing:3px;font-size:11px;color:var(--crimson-d);font-weight:700}
+h2.tt{font-family:'Song Myung';font-size:clamp(20px,4.2vw,28px);margin:6px 0 14px;line-height:1.25}
+.lead{font-size:15.5px;line-height:1.85;color:var(--ink-soft)}
+.lead b{color:var(--crimson-d)}
+.brush{font-family:'Nanum Brush Script';font-size:25px;color:var(--crimson-d);line-height:1.5}
+.center{text-align:center}
+.thread{height:2px;background:linear-gradient(90deg,transparent,var(--crimson),transparent);margin:14px 0;opacity:.55}
+.btn{font-family:'Song Myung';font-size:15.5px;cursor:pointer;border:none;border-radius:10px;padding:12px 20px;background:linear-gradient(180deg,#b53636,#8a2020);color:#fdeccb;box-shadow:0 5px 0 #5e1414,var(--shadow);transition:.12s;letter-spacing:.5px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #5e1414}
+.btn.gold{background:linear-gradient(180deg,#e6c873,#c9a44c);color:#241704;box-shadow:0 5px 0 #8a6e2f}
+.btn.gold:active{box-shadow:0 2px 0 #8a6e2f}
+.btn.ghost{background:linear-gradient(180deg,#efe3c6,#dccaa2);color:#3a2c18;box-shadow:0 5px 0 #b29a64}
+.btn.ghost:active{box-shadow:0 2px 0 #b29a64}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:grayscale(.4)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.creator{display:grid;grid-template-columns:230px 1fr;gap:18px}
+@media(max-width:640px){.creator{grid-template-columns:1fr}}
+.preview{background:linear-gradient(180deg,#0e0a06,#241a11);border-radius:12px;border:1px solid rgba(201,164,76,.3);padding:18px;text-align:center;box-shadow:inset 0 0 50px rgba(0,0,0,.5)}
+.preview .av{width:160px;height:230px;margin:auto}.preview .av svg{width:100%;height:100%}
+.preview .nm{font-family:'Song Myung';color:var(--gold-br);font-size:18px;margin-top:8px}
+.optblock{margin-bottom:14px}
+.optblock .olab{font-family:'Song Myung';font-size:14px;color:#2a1d0f;margin:0 0 7px;display:flex;align-items:center;gap:6px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:7px;cursor:pointer;border:2px solid rgba(0,0,0,.25);transition:.12s}
+.sw:hover{transform:scale(1.1)}.sw.on{outline:3px solid var(--crimson);outline-offset:2px;transform:scale(1.1)}
+.opts{display:flex;gap:7px;flex-wrap:wrap}
+.opt{font-family:'Song Myung';font-size:13px;padding:8px 13px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.45);border:1.5px solid #b29a64;color:#3a2c18;transition:.12s}
+.opt:hover{background:#fff}.opt.on{background:linear-gradient(180deg,#e6c873,#c9a44c);border-color:#8a6e2f;color:#241704;font-weight:700}
+.nameinput{width:100%;font-family:'Song Myung';font-size:16px;padding:11px 13px;border-radius:8px;border:1.5px solid #b29a64;background:rgba(255,255,255,.6);color:#2a2012}
+.nameinput:focus{outline:2px solid var(--gold);background:#fff}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:6px}
+.scard{background:linear-gradient(160deg,#f1e6c9,#dccaa0);border:1.5px solid #6f5630;border-radius:10px;padding:14px;position:relative;transition:.15s}
+.scard.pick{cursor:pointer}.scard.pick:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.scard.sel{outline:3px solid var(--crimson);outline-offset:2px}.scard.out{opacity:.45;filter:grayscale(.6)}
+.scard .av{width:84px;height:118px;margin:0 auto 8px;background:rgba(0,0,0,.06);border-radius:8px}.scard .av svg{width:100%;height:100%}
+.scard .nm{font-family:'Song Myung';font-size:16px;text-align:center;color:#2a2012}
+.scard .role{font-size:12px;color:#6a5230;text-align:center;margin:3px 0 8px}
+.scard .row{font-size:12px;line-height:1.55;color:#4a3a22}.scard .row b{color:#7e1f1f}
+.scard .stamp{position:absolute;top:8px;right:8px;font-family:'Cinzel';font-size:9px;color:#fff;background:#7a7a7a;padding:2px 6px;border-radius:3px;transform:rotate(6deg);display:none}.scard.out .stamp{display:block}
+.simgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.simcard{background:linear-gradient(160deg,#f1e6c9,#dccaa0);border:1.5px solid #6f5630;border-radius:12px;padding:18px;cursor:pointer;transition:.15s;position:relative;text-align:center}
+.simcard:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.simcard.locked{opacity:.5;cursor:not-allowed;filter:grayscale(.4)}
+.simcard .ic{font-size:38px}.simcard h3{font-family:'Song Myung';font-size:17px;margin:6px 0 4px;color:#2a2012}.simcard p{font-size:12.5px;color:#6a5230;line-height:1.5}
+.simcard .done{position:absolute;top:10px;right:10px;background:#2e7d4f;color:#fff;font-size:11px;padding:3px 9px;border-radius:9px;font-family:'Cinzel'}
+.simcard .soon{position:absolute;top:10px;right:10px;background:#8a6e2f;color:#fff;font-size:10px;padding:3px 8px;border-radius:9px;font-family:'Cinzel'}
+.lab{background:linear-gradient(180deg,#0e0a06,#1a1208);border-radius:12px;border:1px solid rgba(201,164,76,.25);padding:22px;margin-top:8px;box-shadow:inset 0 0 60px rgba(0,0,0,.6)}
+.lab .hint{color:#cdb98e;font-size:14px;text-align:center;line-height:1.7;margin-bottom:14px}
+.backbtn{font-family:'Song Myung';color:#cdb98e;background:none;border:1px solid rgba(201,164,76,.4);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px}
+.backbtn:hover{color:#fff;border-color:var(--gold)}
+.subpanel{background:rgba(255,255,255,.05);border:1px solid rgba(201,164,76,.25);border-radius:12px;padding:16px;margin-top:18px}
+/* candle */
+.ctable{position:relative;height:300px;max-width:340px;margin:0 auto}
+.cardEl{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:144px;height:38px;border-radius:4px;background:linear-gradient(#efe3c4,#d8c69c);border:1px solid #6f5630;display:grid;place-items:center;font-family:'Song Myung';font-size:13px;color:#5a4427;z-index:1;opacity:0;transition:.5s}
+.cardEl.show{opacity:1;box-shadow:0 0 22px rgba(230,200,110,.6)}
+.liftgrp{position:absolute;left:0;right:0;bottom:30px;height:230px;transition:transform 1.1s cubic-bezier(.4,0,.3,1);z-index:2}
+.liftgrp.up{transform:translateY(-165px)}
+.pdish{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:300px;height:46px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#bfe3ef,#7fb8cf 75%,#5d97ad);box-shadow:0 10px 24px rgba(0,0,0,.5),inset 0 -6px 12px rgba(0,0,0,.25)}
+.water-tint{position:absolute;bottom:0;width:300px;height:24px;border-radius:50%;background:radial-gradient(ellipse,rgba(214,80,80,.5),rgba(160,40,40,.25));opacity:0;transition:.6s}
+.candle{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:18px;height:46px;border-radius:4px;background:linear-gradient(180deg,#f3e9cf,#d8c79a);z-index:2}
+.flame{position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:14px;height:22px;border-radius:50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff3a0,#ff9b2e 60%,#e0531a);opacity:0;animation:flick .25s infinite alternate;transition:opacity .3s}
+.flame.lit{opacity:1}
+@keyframes flick{from{transform:translateX(-50%) scale(1)}to{transform:translateX(-50%) scale(1.12,.92)}}
+.cup{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) translateY(-210px);width:92px;height:152px;border:3px solid rgba(200,225,235,.65);border-top:none;border-radius:0 0 14px 14px;background:linear-gradient(180deg,rgba(180,220,235,.1),rgba(150,200,220,.18));transition:.9s cubic-bezier(.5,0,.4,1);z-index:3}
+.cup.down{transform:translateX(-50%) translateY(0)}
+.cup .inwater{position:absolute;bottom:0;left:0;right:0;height:0;background:linear-gradient(180deg,rgba(200,70,70,.35),rgba(160,40,40,.55));transition:height 1s ease .6s;border-radius:0 0 11px 11px}
+.stick{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);background:#c9a44c;color:#241704;font-family:'Song Myung';font-size:12px;padding:3px 11px;border-radius:9px;opacity:0;transition:.3s;white-space:nowrap;z-index:4}
+.stick.show{opacity:1}
+.simcanvas{display:block;margin:0 auto;border-radius:12px;background:#06090d;max-width:100%}
+.pbar{height:14px;border-radius:7px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:4px}
+.pbar>i{display:block;height:100%;transition:.35s}
+/* luminol */
+.darkbox{background:radial-gradient(circle at 50% 40%,#0a0d11,#020305);border:1px solid #1c2730;border-radius:12px;padding:24px;display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+.spec{text-align:center}
+.bshape{position:relative;width:110px;height:110px;display:grid;place-items:center;color:#5a3030;font-family:'Song Myung';font-size:13px;background:#1a0808;box-shadow:inset 0 0 18px #000;transition:.4s}
+.bshape.circle{border-radius:50%}.bshape.square{border-radius:8px}
+.bshape.glow{color:#dffaff;background:radial-gradient(circle,#0a3a44,#06181d);box-shadow:0 0 38px 8px rgba(55,226,255,.7),inset 0 0 28px rgba(55,226,255,.5);animation:lum 1.6s ease-in-out infinite}
+@keyframes lum{50%{box-shadow:0 0 58px 14px rgba(55,226,255,.9),inset 0 0 38px rgba(55,226,255,.7)}}
+.spec .cap{color:#b9a986;font-size:12.5px;margin-top:8px}
+/* photo */
+.uvstage{background:linear-gradient(180deg,#0d0a12,#08060c);border-radius:12px;padding:22px;transition:.5s;border:1px solid #221a30}
+.uvstage.on{background:radial-gradient(circle at 50% 30%,#2a1850,#0e0818);box-shadow:inset 0 0 70px rgba(140,60,240,.4)}
+.garments{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.cloth{width:108px;height:138px;border-radius:10px 10px 14px 14px;margin:auto;transition:.5s;border:2px solid rgba(255,255,255,.15);clip-path:polygon(20% 0,80% 0,100% 18%,85% 26%,85% 100%,15% 100%,15% 26%,0 18%)}
+.cloth.guard{background:linear-gradient(135deg,#c0392b,#2e86de 50%,#27ae60)}
+.cloth.noble-dark{background:#f3efe8}
+.cloth.noble-uv{background:linear-gradient(135deg,#e84393,#fdcb6e 50%,#6c5ce7)}
+.gcap{color:#cbbfe0;font-size:12.5px;margin-top:10px;text-align:center}
+/* clue/quiz/feedback */
+.clue{position:relative;background:linear-gradient(135deg,#efe3c4,#dccaa0);border:2px solid #6f5630;border-radius:6px;padding:18px;text-align:center;box-shadow:var(--shadow);font-family:'Song Myung';color:#2a2012;line-height:1.9;font-size:16px;margin-top:16px}
+.clue .corner{position:absolute;width:14px;height:14px;border:2px solid #6f5630}
+.clue .c1{top:6px;left:6px;border-right:none;border-bottom:none}.clue .c2{top:6px;right:6px;border-left:none;border-bottom:none}
+.clue .c3{bottom:6px;left:6px;border-right:none;border-top:none}.clue .c4{bottom:6px;right:6px;border-left:none;border-top:none}
+.qcard{background:rgba(255,250,238,.95);border-radius:10px;padding:16px;margin-top:14px;color:#2a2012}
+.qcard .q{font-family:'Song Myung';font-size:15px;margin-bottom:4px}
+.choices{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.choice{flex:1 1 130px;background:linear-gradient(180deg,#efe3c6,#dccaa2);border:1.5px solid #6f5630;border-radius:8px;padding:12px;font-family:'Song Myung';font-size:14px;color:#2a2012;cursor:pointer;text-align:center;transition:.12s}
+.choice:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.choice.wrong{background:#e6b3ad;animation:shake .3s}.choice.right{background:#a8d8b0;outline:2px solid #2ea050}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{margin-top:14px;padding:12px 14px;border-radius:8px;font-size:14px;line-height:1.7;display:none}
+.fb.show{display:block;animation:fade .3s}
+.fb.ok{background:rgba(46,160,80,.16);border:1px solid #2ea050;color:#1c5a30}
+.fb.no{background:rgba(180,50,50,.16);border:1px solid #b53636;color:#7e1f1f}
+.readout{display:flex;justify-content:space-around;gap:10px;margin:14px 0;flex-wrap:wrap}
+.gauge{background:rgba(255,255,255,.05);border:1px solid rgba(201,164,76,.3);border-radius:10px;padding:10px 16px;text-align:center;min-width:120px}
+.gauge .v{font-family:'Cinzel';font-size:22px;color:var(--glow)}.gauge .l{font-size:12px;color:#bca878}
+.dialwrap{text-align:center;margin:4px 0}.dialwrap input[type=range]{width:88%;accent-color:var(--gold)}
+/* speech bubble */
+.speech{display:flex;align-items:center;gap:12px;margin-top:16px;background:rgba(255,250,238,.94);border-radius:12px;padding:12px 14px;border:1px solid #c9a44c}
+.speech .sav{width:58px;height:80px;flex:0 0 58px;background:rgba(0,0,0,.06);border-radius:8px}.speech .sav svg{width:100%;height:100%}
+.speech .bub{position:relative;background:#fff;border:2px solid #6f5630;border-radius:12px;padding:10px 14px;font-family:'Song Myung';color:#2a2012;font-size:14px;line-height:1.6}
+.speech .bub::before{content:"";position:absolute;left:-9px;top:22px;border:7px solid transparent;border-right-color:#6f5630}
+.speech .bub::after{content:"";position:absolute;left:-6px;top:22px;border:7px solid transparent;border-right-color:#fff}
+/* notebook */
+.nbgrid{display:grid;grid-template-columns:1fr;gap:14px}
+.nbentry{border-radius:10px;overflow:hidden;border:1px solid rgba(90,68,39,.4)}
+.nbentry .h{padding:14px 16px;font-family:'Song Myung';display:flex;justify-content:space-between;align-items:center;font-size:16px}
+.nbentry.locked .h{background:linear-gradient(180deg,#2a2018,#1c1510);color:#7a6a4c}
+.nbentry.unlocked .h{background:linear-gradient(180deg,#3a2a1a,#2a1d12);color:var(--gold-br);cursor:pointer}
+.nbentry .b{background:rgba(255,250,238,.95);color:#2b2018;padding:0 16px;max-height:0;overflow:hidden;transition:.4s;font-size:14px;line-height:1.8}
+.nbentry.open .b{padding:16px;max-height:700px}
+.nbentry .clue-mini{background:#fff2c2;border:1px solid #d8b24a;border-radius:6px;padding:8px 12px;font-family:'Song Myung';color:#5a3a1f;margin-bottom:10px}
+.nbentry .k{display:inline-block;background:#fff2c2;border:1px solid #d8b24a;border-radius:5px;padding:1px 7px;font-weight:700}
+.nbentry ul{margin:6px 0 0 18px}.nbentry .arr{color:var(--crimson)}
+.nbprog{text-align:center;color:#cdb98e;font-family:'Cinzel';letter-spacing:1px;margin-bottom:6px}
+/* video */
+.videobox{position:relative;width:100%;max-width:560px;margin:14px auto 0;border-radius:10px;overflow:hidden;border:1px solid rgba(201,164,76,.3);background:#000}
+.videobox.portrait{max-width:300px}
+.videobox .ar{position:relative;width:100%;padding-top:56.25%}
+.videobox.portrait .ar{padding-top:177.78%}
+.videobox iframe,.videobox video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.videoph{position:absolute;inset:0;display:grid;place-items:center;color:#bca878;font-size:14px;text-align:center;padding:24px;line-height:1.8;font-family:'Song Myung';background:repeating-linear-gradient(45deg,#161009 0 12px,#1c140b 12px 24px)}
+/* bright -> dark mood */
+#brightlayer{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.4s ease;
+  background:radial-gradient(1100px 640px at 50% -8%,#fdeccb 0%,#f2d488 30%,#e9b65c 50%,#9cc4e6 78%,#6fa8d4 100%)}
+body.bright #brightlayer{opacity:1}
+/* image slot */
+.imgslot{position:relative;width:100%;border-radius:12px;overflow:hidden;border:1px solid rgba(201,164,76,.3);background:#0c0907}
+.imgslot img{display:block;width:100%;height:100%;object-fit:cover}
+.imgslot .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:18px;color:#a8946a;font-family:'Song Myung';font-size:13px;line-height:1.7;background:repeating-linear-gradient(45deg,#15100a 0 12px,#1b140c 12px 24px)}
+.imgslot .ph code{color:#e6c873;background:rgba(0,0,0,.4);padding:1px 6px;border-radius:4px;font-size:12px}
+/* cutscene */
+.cutscene{max-width:720px;margin:18px auto;animation:fade .4s ease}
+.cut-stage{aspect-ratio:16/9;border-radius:14px 14px 0 0;overflow:hidden;border:1px solid rgba(201,164,76,.35);border-bottom:none;position:relative;background:#0c0907}
+.cut-stage img{width:100%;height:100%;object-fit:cover}
+.cut-stage .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#cdb98e;font-family:'Song Myung';padding:24px;font-size:14px;line-height:1.8}
+.cut-stage.bright .ph{background:radial-gradient(circle at 50% 20%,#f6e3b4,#e7b25a 60%,#7fb0d8)}
+.cut-stage.dark .ph{background:radial-gradient(circle at 50% 30%,#1c1626,#0a0710)}
+.cut-stage .vignette{position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(0,0,0,.55);pointer-events:none}
+.cut-dialogue{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#efe3c4,#dccaa0);border:2px solid #6f5630;border-top:none;padding:18px;min-height:148px}
+.cut-portrait{width:78px;height:108px;flex:0 0 78px;background:rgba(0,0,0,.08);border-radius:8px;border:1px solid #6f5630;overflow:hidden;display:grid;place-items:center;font-size:34px}
+.cut-portrait svg{width:100%;height:100%}
+.cut-name{font-family:'Cinzel';font-weight:700;color:#7e1f1f;letter-spacing:1px;font-size:13px;margin-bottom:6px}
+.cut-text{font-family:'Song Myung';color:#2a2012;font-size:16px;line-height:1.85}
+.cut-text .em{color:#7e1f1f;font-weight:700}
+.cut-controls{display:flex;align-items:center;gap:10px;justify-content:flex-end;background:#241a11;border:2px solid #6f5630;border-top:none;border-radius:0 0 14px 14px;padding:12px 16px}
+.cut-progress{margin-right:auto;color:#8a7a5c;font-family:'Cinzel';font-size:12px;letter-spacing:1px}
+.cut-btn{font-family:'Song Myung';cursor:pointer;border:none;border-radius:8px;padding:9px 18px;font-size:14px}
+.cut-skip{background:transparent;color:#a8946a;border:1px solid #6f5630}
+.cut-skip:hover{color:#e6c873;border-color:#c9a44c}
+.cut-next{background:linear-gradient(180deg,#e6c873,#c9a44c);color:#241704;box-shadow:0 4px 0 #8a6e2f}
+.cut-next:active{transform:translateY(2px);box-shadow:0 2px 0 #8a6e2f}
+/* clickable clue card */
+.cardEl.clickable{cursor:pointer;animation:cardpulse 1.1s ease-in-out infinite}
+.cardEl .tap{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;color:#e6c873;font-family:'Song Myung';white-space:nowrap}
+@keyframes cardpulse{50%{box-shadow:0 0 30px rgba(230,200,110,.95);transform:translateX(-50%) scale(1.05)}}
+footer{text-align:center;color:#8a7a5c;font-size:12.5px;margin-top:26px;font-family:'Song Myung';line-height:1.8}
+footer .made{color:var(--gold-br);font-size:13px}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(8,5,2,.82);display:none;place-items:center;padding:18px;backdrop-filter:blur(2px)}
+.modal.open{display:grid;animation:fade .25s}
+.modal .box{max-width:780px;width:100%;max-height:86vh;overflow:auto}
+.modal .x{position:sticky;top:0;float:right;background:#7e1f1f;color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:18px;font-family:'Cinzel'}
+</style>
+</head>
+<body>
+<div id="brightlayer"></div>
+<header>
+  <div class="hbar">
+    <div class="brand"><div class="seal">CSI</div><h1>CASE FILE 001<small>로마의 사라진 보석</small></h1></div>
+    <div class="miniav" id="miniav"></div>
+  </div>
+  <div class="tabs" id="tabs" style="display:none">
+    <div class="tab" data-tab="story" onclick="setTab('story')">📜 스토리</div>
+    <div class="tab" data-tab="lab" onclick="setTab('lab')">🔬 과학 실험실</div>
+    <div class="tab" data-tab="note" onclick="setTab('note')">📒 단서노트<span class="b" id="noteBadge" style="display:none">0</span></div>
+  </div>
+</header>
+<div class="wrap">
+  <div id="stage"></div>
+  <footer>TEAM HAENURI · 과학의 힘으로 진실을 밝힌다<br><span class="made">제작 : 조승재 (과학이조선생)</span></footer>
+</div>
+<div class="modal" id="modal"><div class="box parch tight"><button class="x" onclick="closeModal()">×</button>
+  <div class="eyebrow">SUSPECT DOSSIER</div><h2 class="tt">용의자 정보</h2><div class="sgrid" id="modalGrid"></div></div></div>
+
+<script>
+/* ============ 실험 영상 설정 (유튜브 미등록 주소 그대로 붙여넣기) ============ */
+const VIDEOS = {
+  candle:  'https://youtube.com/shorts/8OaTTFxd3ak',  // 물을 빨아올리는 양초
+  luminol: 'https://youtube.com/shorts/tNPP6PPtJFM',  // 루미놀 반응
+  photo:   'https://youtube.com/shorts/wli0kcm4EUk',  // 광변색(시광) 안료
+};
+function videoEmbed(val,title){
+  if(!val) return `<div class="videobox"><div class="ar"><div class="videoph">🎬 ${title}<br><span style="font-size:12px;opacity:.85">위 스크립트의 <b>VIDEOS</b> 값에 유튜브 주소를 넣으면<br>여기에 영상이 재생됩니다.</span></div></div></div>`;
+  const cls = /shorts\//.test(val) ? 'videobox portrait' : 'videobox';
+  const m = val.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+  let inner;
+  if(m){ inner=`<iframe src="https://www.youtube.com/embed/${m[1]}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`; }
+  else if(/\.(mp4|webm|ogg)(\?|$)/i.test(val)){ inner=`<video controls preload="metadata" src="${val}"></video>`; }
+  else { inner=`<iframe src="${val}" allow="autoplay;encrypted-media" allowfullscreen></iframe>`; }
+  return `<div class="${cls}"><div class="ar">${inner}</div></div>`;
+}
+/* ============ 이미지 설정 (ChatGPT로 만든 그림 주소나 data:URL을 넣으세요) ============ */
+const IMAGES = {
+  cover:    null,  // 타이틀/표지 — 빛나는 로마 신전과 보석
+  romeBright:null, // 인트로 1 — 번영하는 밝은 로마 (낮)
+  jewel:    null,  // 인트로 2 — 솔리스의 보석 클로즈업 (빛남)
+  romeDark: null,  // 인트로 3 — 보석이 사라진 어두운 신전 (밤)
+  crime:    null,  // 사건 현장 — 신전 내부, 단서의 흔적
+  victory:  null,  // 엔딩 — 보석을 되찾아 다시 밝아진 로마
+};
+function imgSlot(key,label,extraStyle){
+  const v=IMAGES[key];
+  if(v) return `<img src="${v}" alt="${label}">`;
+  return `<div class="ph">🖼️ ${label}<br><span style="font-size:12px;opacity:.85">그림을 만들면 <code>IMAGES.${key}</code> 에 주소를 넣으세요</span></div>`;
+}
+
+/* ============ AVATAR (Minecraft style) ============ */
+function mc(cfg){
+  const c=Object.assign({skin:'#e8b690',hair:'#5a3a1f',hat:'none',glasses:'none',shirt:'#f4f1ea',pants:'#2c3e6b',accent:'#b53636',beard:false,longHair:false,eye:'#3a2a18'},cfg);
+  let s='';
+  if(c.longHair) s+=`<rect x="23" y="14" width="6" height="40" fill="${c.hair}"/><rect x="61" y="14" width="6" height="40" fill="${c.hair}"/>`;
+  s+=`<rect x="29" y="8" width="32" height="32" fill="${c.skin}"/>`;
+  if(c.hat!=='helmet'&&c.hat!=='hood') s+=`<rect x="29" y="8" width="32" height="8" fill="${c.hair}"/><rect x="29" y="8" width="4" height="14" fill="${c.hair}"/><rect x="57" y="8" width="4" height="14" fill="${c.hair}"/>`;
+  s+=`<rect x="36" y="22" width="6" height="6" fill="#fff"/><rect x="48" y="22" width="6" height="6" fill="#fff"/>`;
+  s+=`<rect x="38" y="24" width="3" height="4" fill="${c.eye}"/><rect x="50" y="24" width="3" height="4" fill="${c.eye}"/>`;
+  s+=`<rect x="43" y="29" width="4" height="3" fill="${c.skin}" stroke="rgba(0,0,0,.12)" stroke-width="0.5"/><rect x="40" y="34" width="10" height="2" fill="#7a4a3a"/>`;
+  if(c.beard) s+=`<rect x="33" y="31" width="24" height="9" fill="${c.hair}"/><rect x="40" y="34" width="10" height="2" fill="#5a3a2a"/>`;
+  s+=`<rect x="29" y="42" width="32" height="36" fill="${c.shirt}"/><rect x="29" y="69" width="32" height="5" fill="${c.accent}"/>`;
+  s+=`<rect x="17" y="42" width="11" height="26" fill="${c.shirt}"/><rect x="17" y="68" width="11" height="10" fill="${c.skin}"/>`;
+  s+=`<rect x="62" y="42" width="11" height="26" fill="${c.shirt}"/><rect x="62" y="68" width="11" height="10" fill="${c.skin}"/>`;
+  s+=`<rect x="30" y="78" width="14" height="40" fill="${c.pants}"/><rect x="46" y="78" width="14" height="40" fill="${c.pants}"/>`;
+  s+=`<rect x="30" y="110" width="14" height="8" fill="#2a1d12"/><rect x="46" y="110" width="14" height="8" fill="#2a1d12"/>`;
+  if(c.hat==='detective') s+=`<rect x="20" y="9" width="50" height="5" fill="#6b4f2a"/><rect x="28" y="0" width="34" height="11" fill="#7a5a30"/>`;
+  if(c.hat==='laurel'){for(let i=0;i<5;i++){let x=24+i*9;s+=`<rect x="${x}" y="4" width="6" height="5" fill="#c9a44c" transform="rotate(${i*8-16} ${x+3} 6)"/>`;}}
+  if(c.hat==='wizard') s+=`<polygon points="45,-10 24,12 66,12" fill="#3a2a6b"/><rect x="22" y="11" width="46" height="5" fill="#2a1d52"/>`;
+  if(c.hat==='helmet') s+=`<rect x="27" y="2" width="36" height="16" fill="#8a8f99"/><rect x="43" y="2" width="4" height="20" fill="#6a6f79"/><rect x="40" y="-6" width="10" height="8" fill="${c.accent}"/>`;
+  if(c.hat==='hood') s+=`<rect x="25" y="4" width="40" height="14" fill="${c.shirt}"/><rect x="25" y="4" width="6" height="36" fill="${c.shirt}"/><rect x="59" y="4" width="6" height="36" fill="${c.shirt}"/>`;
+  if(c.glasses==='round') s+=`<circle cx="39" cy="25" r="6" fill="none" stroke="#222" stroke-width="2"/><circle cx="51" cy="25" r="6" fill="none" stroke="#222" stroke-width="2"/><rect x="44" y="24" width="3" height="2" fill="#222"/>`;
+  if(c.glasses==='goggles') s+=`<rect x="33" y="20" width="11" height="9" rx="3" fill="rgba(120,200,220,.4)" stroke="#333" stroke-width="2"/><rect x="46" y="20" width="11" height="9" rx="3" fill="rgba(120,200,220,.4)" stroke="#333" stroke-width="2"/>`;
+  return `<svg viewBox="0 0 90 122" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+}
+
+/* ============ DATA ============ */
+const SUSPECTS=[
+ {id:'lucius',name:'루시우스',role:'대장장이 · 제단 받침대 제작',item:'뭉툭한 망치',sharp:false,rel:'제단을 수리하며 보석 보호대를 제작함',motive:'무기 개발 욕심으로 훔쳤다는 의심',cfg:{skin:'#b07a4f',hair:'#2a1d12',beard:true,shirt:'#6b4322',pants:'#3a2a18',accent:'#3a2a18',hat:'none'}},
+ {id:'gaius',name:'가이우스',role:'약제사 · 신전 향료·약재 공급',item:'뭉툭한 약초 절구',sharp:false,rel:'보석을 보호하는 약품 제조 담당',motive:'불사의 욕망으로 훔쳤다는 의심',cfg:{skin:'#d9a878',hair:'#3a2a18',hat:'hood',shirt:'#2e6b5a',pants:'#244a40',accent:'#1d3a32',glasses:'round'}},
+ {id:'flavius',name:'플라비우스',role:'경비병 · 신전 야간 경비',item:'날카로운 근접용 단검',sharp:true,rel:'사건 당일 야간 근무 중이었음',motive:'빈곤과 차별에서 벗어나려는 동기',cfg:{skin:'#c98f5f',hair:'#3a2a18',hat:'helmet',shirt:'#c9a44c',pants:'#7a6a40',accent:'#8a2020'}},
+ {id:'camilla',name:'카밀라',role:'귀족 여성 · 총독 연회 주최자',item:'날카로운 호신용 단검',sharp:true,rel:'보석이 사라진 날 신전에 초대받음',motive:'욕망과 허영심에서 비롯된 범행',cfg:{skin:'#f0cba0',hair:'#d9b65a',longHair:true,hat:'laurel',shirt:'#d6336c',pants:'#7b2d8e',accent:'#e6c873'}},
+];
+const CULPRIT='camilla';
+const NOTES={
+ candle:{ic:'🕯️',title:'대기압 · 샤를의 법칙',sub:'수사기법 #1 — 물을 빨아올리는 양초',clue:'사건 당일 밤 대장간은 불이 켜져 있고 무기 만드는 소리가 계속됨 → 루시우스 알리바이 성립',
+  body:`<ul><li>불이 타면 컵 속 공기가 뜨거워져 입자가 빠르게 움직입니다 (<span class="k">샤를의 법칙</span>: 온도↑ 부피↑).</li><li>불이 꺼지면 공기가 식어 입자가 느려지고 <b>컵 속 압력이 낮아집니다</b> <span class="arr">↓</span>.</li><li>더 센 <span class="k">바깥 대기압</span>이 물을 컵 안으로 밀어 올리고, 컵과 패트리 접시를 <b>달라붙게</b> 합니다.</li><li>그래서 컵을 들면 접시가 함께 올라오고, 그 아래 단서를 손대지 않고 꺼낼 수 있습니다.</li></ul>`},
+ polar:{ic:'🔆',title:'빛의 편광',sub:'수사기법 #2 — 빛의 길을 열어라',clue:'날카로운 도구 → 원형 혈흔 / 뭉툭한 도구 → 네모 혈흔',
+  body:`<ul><li>빛은 <span class="k">물결(파동)</span>처럼 진동하며 나아갑니다.</li><li>편광판은 <span class="k">한 방향으로 진동하는 빛</span>만 통과시켜요.</li><li>편광판 1을 지난 빛이 <b>90°로 돌아간 편광판 2</b>를 만나면 진동 방향이 막혀 <b>빛이 통과하지 못합니다(차단)</b>.</li><li>두 편광판이 <b>나란하면 환하게</b>, <b>직각이면 캄캄하게</b> 보입니다.</li></ul>`},
+ luminol:{ic:'🩸',title:'루미놀 화학발광',sub:'수사기법 #3 — 진짜 혈흔을 찾아라',clue:'진짜 혈흔은 원형 → 날카로운 도구 → 플라비우스·카밀라로 압축',
+  body:`<ul><li>루미놀은 <span class="k">염기성 용액</span>에서 <span class="k">과산화수소</span>와 반응해 산화됩니다.</li><li>혈액 속 <b>헤모글로빈의 철(Fe)</b>이 <b>촉매</b> 역할을 해 반응을 빠르게 합니다.</li><li>들뜬 전자가 안정 상태로 돌아오며 <b style="color:#1c6fa0">청색 빛(화학발광)</b>을 냅니다.</li><li>극미량(최대 1ppm)의 혈액도 검출 → 진짜 혈흔만 빛납니다.</li></ul>`},
+ photo:{ic:'🟣',title:'광변색 안료 · 자외선 광화학',sub:'수사기법 #4 — 태양 아래 진실',clue:'자외선에 색이 변하는 광변색 옷 = 카밀라(귀족)가 진범',
+  body:`<ul><li>광변색 안료는 <span class="k">자외선(UV)</span>을 받으면 <b>분자 구조가 변해</b> 색이 나타납니다.</li><li>자외선이 사라지면 원래(무색/흰색)로 돌아가는 <span class="k">가역 반응</span>.</li><li>대표 물질 <b>스피로옥사진</b>: 무색 ⇄ 유색.</li><li>경비병의 옷은 평범한 염색이라 빛과 무관하게 색이 그대로 → 증언과 불일치.</li></ul>`},
+};
+const NOTE_ORDER=['candle','polar','luminol','photo'];
+
+/* ============ STATE ============ */
+let D={name:'',skin:'#e8b690',hair:'#5a3a1f',hat:'detective',glasses:'round',shirt:'#f4f1ea',pants:'#2c3e6b',accent:'#b53636',longHair:false,beard:false};
+let CLUES={candle:false,polar:false,luminol:false,photo:false};
+let APP={stage:'creator',tab:'story',labView:'list',cutI:0};
+const $=(s,r=document)=>r.querySelector(s);
+const stage=$('#stage');
+function cluesCount(){return NOTE_ORDER.filter(k=>CLUES[k]).length;}
+function updateMini(){ $('#miniav').innerHTML=(APP.stage!=='creator')?mc(D):''; }
+function updateBadge(){const n=cluesCount();const b=$('#noteBadge');if(n>0){b.style.display='';b.textContent=n;}else b.style.display='none';}
+function speechBubble(id,text){const s=SUSPECTS.find(x=>x.id===id);return `<div class="speech"><div class="sav">${mc(s.cfg)}</div><div class="bub">${text}</div></div>`;}
+
+/* ============ CREATOR ============ */
+const SKINS=['#f3d2b3','#e8b690','#d9a878','#c98f5f','#b07a4f','#8a5a36'];
+const HAIRS=['#2a1d12','#5a3a1f','#8a5a2a','#d9b65a','#b53636','#3a3a3a','#d8d8d8'];
+const SHIRTS=['#f4f1ea','#b53636','#2e6b5a','#2c3e6b','#7b2d8e','#c9a44c','#34495e'];
+const PANTS=['#2c3e6b','#3a2a18','#444444','#5a2a2a','#1d3a32'];
+const HATS=[['none','없음'],['detective','탐정 모자'],['laurel','월계관'],['wizard','마법사']];
+const GLS=[['none','없음'],['round','둥근 안경'],['goggles','고글']];
+function renderCreator(){
+  return `<div class="parch">
+    <div class="eyebrow center" style="text-align:center">CHARACTER CREATION</div>
+    <h2 class="tt center" style="text-align:center">나만의 과학 수사관 만들기</h2>
+    <div class="creator">
+      <div class="preview"><div class="av" id="avPreview">${mc(D)}</div><div class="nm" id="avName">${D.name||'이름을 입력하세요'}</div></div>
+      <div>
+        <div class="optblock"><div class="olab">🪪 수사관 이름</div><input class="nameinput" id="nameInput" maxlength="10" placeholder="예: 마르쿠스" value="${D.name}" oninput="onName(this.value)"></div>
+        <div class="optblock"><div class="olab">🎨 피부색</div><div class="swatches">${SKINS.map(c=>`<div class="sw ${D.skin===c?'on':''}" style="background:${c}" onclick="setOpt('skin','${c}')"></div>`).join('')}</div></div>
+        <div class="optblock"><div class="olab">💇 머리색</div><div class="swatches">${HAIRS.map(c=>`<div class="sw ${D.hair===c?'on':''}" style="background:${c}" onclick="setOpt('hair','${c}')"></div>`).join('')}</div>
+          <div class="opts" style="margin-top:8px"><div class="opt ${!D.longHair?'on':''}" onclick="setOpt('longHair',false)">짧은 머리</div><div class="opt ${D.longHair?'on':''}" onclick="setOpt('longHair',true)">긴 머리</div></div></div>
+        <div class="optblock"><div class="olab">🎩 모자</div><div class="opts">${HATS.map(([v,n])=>`<div class="opt ${D.hat===v?'on':''}" onclick="setOpt('hat','${v}')">${n}</div>`).join('')}</div></div>
+        <div class="optblock"><div class="olab">👓 안경</div><div class="opts">${GLS.map(([v,n])=>`<div class="opt ${D.glasses===v?'on':''}" onclick="setOpt('glasses','${v}')">${n}</div>`).join('')}</div></div>
+        <div class="optblock"><div class="olab">👕 상의 색</div><div class="swatches">${SHIRTS.map(c=>`<div class="sw ${D.shirt===c?'on':''}" style="background:${c}" onclick="setOpt('shirt','${c}')"></div>`).join('')}</div></div>
+        <div class="optblock"><div class="olab">👖 하의 색</div><div class="swatches">${PANTS.map(c=>`<div class="sw ${D.pants===c?'on':''}" style="background:${c}" onclick="setOpt('pants','${c}')"></div>`).join('')}</div></div>
+        <button class="btn gold" id="startBtn" ${D.name?'':'disabled'} onclick="startGame()" style="width:100%;margin-top:6px">▶ 사건 수사 시작</button>
+      </div>
+    </div></div>`;
+}
+function onName(v){D.name=v.trim();$('#avName').textContent=D.name||'이름을 입력하세요';$('#startBtn').disabled=!D.name;}
+function setOpt(k,v){D[k]=v;renderRoot();}
+function startGame(){if(!D.name)return;APP.stage='intro';APP.cutI=0;$('#tabs').style.display='none';updateMini();renderRoot();}
+
+/* ============ INTRO CUTSCENE ============ */
+const PRIEST={skin:'#e6c39a',hair:'#d8d8d8',hat:'hood',shirt:'#efe9da',pants:'#cfc6b0',accent:'#c9a44c',beard:true};
+function SCENES(){return [
+ {mood:'bright',img:'romeBright',icon:'🏛️',name:'이야기꾼',text:`기원후 72년. 로마 제국은 한낮의 태양처럼 찬란하게 빛나고 있었다. 신전 한가운데에는 제국의 평화를 상징하는 보석, <span class="em">‘솔리스의 보석’</span>이 황금빛으로 반짝였다.`},
+ {mood:'bright',img:'jewel',icon:'💎',name:'사제',cfg:PRIEST,text:`이 보석은 태양신 솔의 축복이라오. 보석이 빛나는 한, 로마에는 영원한 평화와 번영이 깃들 것이오.`},
+ {mood:'bright',img:'jewel',icon:'💎',name:'사제',cfg:PRIEST,text:`허나 한 가지… 오래된 예언이 전해지지요. <span class="em">"보석의 빛이 사라지면, 제국에 다시 태양이 뜨지 않으리라."</span>`},
+ {mood:'dark',img:'romeDark',icon:'🌑',name:'이야기꾼',text:`그러던 어느 깊은 밤— <span class="em">솔리스의 보석이 사라졌다!</span> 신전의 빛이 꺼지고, 로마 전체가 불길한 어둠에 잠겼다.`},
+ {mood:'dark',img:'romeDark',icon:'😰',name:'사제',cfg:PRIEST,text:`큰일이오! 누군가 보석을 훔쳐갔소. 어둠이 제국을 삼키기 전에 진실을 밝혀야 하오. 수사관 <span class="em">${esc(D.name)}</span>, 당신만이 희망이오!`},
+ {mood:'dark',img:'crime',icon:'🔎',name:`수사관 ${esc(D.name)}`,cfg:D,text:`걱정 마십시오. 감정이 아닌 <span class="em">과학</span>으로 진실을 밝히겠습니다. 현장에 남은 단서부터 살펴보죠. 용의자는 모두 네 사람…`},
+ {mood:'dark',icon:'🔨',name:'루시우스 (대장장이)',cfg:SUSPECTS[0].cfg,text:`난 그저 대장장이일 뿐이오! 어젯밤엔 밤새 대장간에서 무기를 만들고 있었소. 난 결백하오.`},
+ {mood:'dark',icon:'⚗️',name:'가이우스 (약제사)',cfg:SUSPECTS[1].cfg,text:`약제사인 내가 왜 보석을 훔치겠소? 난 신전에 약재와 향료만 댔을 뿐이오. 내 절구는 약초나 빻는 뭉툭한 물건이라오.`},
+ {mood:'dark',icon:'🛡️',name:'플라비우스 (경비병)',cfg:SUSPECTS[2].cfg,text:`경비병인 내가 의심받다니 억울하오. 난 그저 맡은 자리를 지켰을 뿐… 허나 내 단검이 날카로운 건 사실이오.`},
+ {mood:'dark',icon:'👑',name:'카밀라 (귀족)',cfg:SUSPECTS[3].cfg,text:`어머, 날 의심하는 건가요? 난 그저 연회에 초대받은 손님이랍니다. 호호… 증거가 있다면 어디 한번 보여주시지요?`},
+ {mood:'dark',img:'crime',icon:'⚖️',name:`수사관 ${esc(D.name)}`,cfg:D,text:`네 명의 용의자, 네 가지 과학 수사. 누구의 말이 진실이고 누가 거짓을 말하는가— <span class="em">실험으로 증명하겠다.</span>`},
+];}
+function esc(s){return (s||'님').replace(/[<>&]/g,'');}
+function applyMood(m){document.body.classList.toggle('bright',m==='bright');}
+function renderIntro(){
+  const sc=SCENES(); const i=Math.max(0,Math.min(APP.cutI,sc.length-1)); const s=sc[i]; const last=i===sc.length-1;
+  setTimeout(()=>applyMood(s.mood),20);
+  const portrait = s.cfg ? mc(s.cfg) : `<span>${s.icon||'📜'}</span>`;
+  const stageInner = s.img ? imgSlot(s.img, s.name) : `<div class="ph">${s.icon||''}</div>`;
+  return `<div class="cutscene">
+    <div class="cut-stage ${s.mood}">${stageInner}<div class="vignette"></div></div>
+    <div class="cut-dialogue">
+      <div class="cut-portrait">${portrait}</div>
+      <div><div class="cut-name">${s.name}</div><div class="cut-text">${s.text}</div></div>
+    </div>
+    <div class="cut-controls">
+      <span class="cut-progress">${i+1} / ${sc.length}</span>
+      ${last?'':'<button class="cut-btn cut-skip" onclick="cutSkip()">건너뛰기 »</button>'}
+      <button class="cut-btn cut-next" onclick="${last?'finishIntro()':'cutNext()'}">${last?'▶ 수사 시작':'다음 ▶'}</button>
+    </div></div>`;
+}
+function cutNext(){APP.cutI++;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function cutSkip(){APP.cutI=SCENES().length-1;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function finishIntro(){applyMood('dark');APP.stage='app';APP.tab='story';$('#tabs').style.display='flex';updateMini();renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function replayIntro(){APP.stage='intro';APP.cutI=0;$('#tabs').style.display='none';renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+
+/* ============ TABS ============ */
+function setTab(t){APP.tab=t;if(t==='lab')APP.labView='list';renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function syncTabs(){document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.tab===APP.tab));updateBadge();}
+
+/* ============ STORY ============ */
+function suspectCard(s,opts={}){
+  const out=opts.out&&opts.out.includes(s.id);
+  return `<div class="scard ${opts.pick?'pick':''} ${out?'out':''}" data-id="${s.id}" ${opts.pick?`onclick="pickSuspect('${s.id}')"`:''}>
+    <span class="stamp">CLEARED</span><div class="av">${mc(s.cfg)}</div><div class="nm">${s.name}</div><div class="role">${s.role}</div>
+    <div class="row"><b>소지품</b> ${s.item} (${s.sharp?'날카로움':'뭉툭함'})</div>
+    <div class="row" style="margin-top:3px"><b>관계</b> ${s.rel}</div>
+    <div class="row" style="margin-top:3px;color:#6a5230">${s.motive}</div></div>`;
+}
+function renderStory(){
+  const n=cluesCount(); const accuseLocked=n<4;
+  return `<div class="parch">
+    <div class="imgslot" style="aspect-ratio:16/9;margin-bottom:14px">${imgSlot('cover','표지 — 빛나는 로마 신전과 솔리스의 보석')}</div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <div style="width:64px;height:88px;flex:0 0 64px">${mc(D)}</div>
+      <div style="flex:1;min-width:160px"><div class="eyebrow">CASE FILE 001 · 기원후 72년 로마</div><h2 class="tt" style="margin:4px 0">수사관 ${D.name}, 사건을 맡다</h2></div>
+      <button class="btn ghost" onclick="replayIntro()">🎬 사건 브리핑 다시 보기</button></div>
+    <div class="thread"></div>
+    <p class="lead">로마 제국의 평화를 상징하는 <b>‘솔리스의 보석’</b>이 신전에서 사라졌다.</p>
+    <p class="brush center" style="margin:14px 0">“보석의 빛이 사라지면 제국에 다시 태양이 뜨지 않는다.”</p>
+    <p class="lead">‘과학 실험실’ 탭에서 4가지 수사기법을 <b>순서대로</b> 수행해 단서를 모으고, 이곳으로 돌아와 범인을 지목하라.</p></div>
+  <div class="parch"><div class="eyebrow">SUSPECTS</div><h2 class="tt">용의자 4인</h2><div class="sgrid">${SUSPECTS.map(s=>suspectCard(s)).join('')}</div></div>
+  <div class="parch"><div class="eyebrow">FINAL VERDICT</div><h2 class="tt">최종 추리 ${accuseLocked?'🔒':'⚖️'}</h2>
+    ${accuseLocked
+      ? `<p class="lead">단서가 더 필요합니다. <b>과학 실험실</b>에서 모든 실험을 마치면 범인을 지목할 수 있습니다.<br><span style="font-size:13px;color:#6a5230">수집한 단서: ${n} / 4</span></p><div class="btnrow"><button class="btn gold" onclick="setTab('lab')">🔬 실험실로 가기</button></div>`
+      : `<p class="lead">모든 단서를 종합해 보석을 훔친 <b>진범</b>을 지목하세요.</p><div class="sgrid" style="margin-top:14px">${SUSPECTS.map(s=>suspectCard(s,{pick:true})).join('')}</div><div class="fb" id="acfb"></div><div id="endimg"></div>`}
+  </div>`;
+}
+function pickSuspect(id){
+  document.querySelectorAll('.scard.pick').forEach(c=>c.classList.remove('sel'));
+  document.querySelector(`.scard[data-id="${id}"]`).classList.add('sel');
+  const fb=$('#acfb');
+  if(id===CULPRIT){fb.className='fb ok show';fb.innerHTML=`🎉 정답입니다, 수사관 ${D.name}! 범인은 <b>카밀라</b> — 자외선에 반응하는 광변색 옷의 비밀이 밝혀졌습니다. ‘솔리스의 보석’을 되찾고 로마의 평화를 지켰습니다!`;
+    window.won=true; applyMood('bright');
+    const ei=$('#endimg'); if(ei) ei.innerHTML=`<div class="imgslot" style="aspect-ratio:16/9;margin-top:14px">${imgSlot('victory','엔딩 — 보석을 되찾아 다시 밝아진 로마')}</div>`;
+  }
+  else{const why={lucius:'루시우스는 사건 당일 밤 대장간에서 일한 알리바이가 있습니다 (수사 #1).',gaius:'가이우스의 절구는 뭉툭합니다. 진짜 혈흔은 원형=날카로운 도구였죠 (수사 #2·#3).',flavius:'플라비우스의 옷은 평범한 염색이라 빛과 무관하게 색이 그대로입니다 (수사 #4).'}[id];
+    fb.className='fb no show';fb.innerHTML='아직 아닙니다. '+why+' 단서를 다시 종합해 보세요.';}
+}
+
+/* ============ LAB ============ */
+function renderLab(){
+  if(APP.labView==='list'){
+    const order=[
+      {id:'candle',ic:'🕯️',t:'물을 빨아올리는 양초',d:'대기압으로 접시 아래 단서 꺼내기',prereq:null},
+      {id:'polar',ic:'🔆',t:'편광 — 빛의 길을 열어라',d:'편광판을 회전해 숨은 단서 공개',prereq:'candle'},
+      {id:'luminol',ic:'🩸',t:'루미놀 — 진짜 혈흔 찾기',d:'화학발광으로 범행 도구 추적',prereq:'polar'},
+      {id:'photo',ic:'🟣',t:'광변색 — 태양 아래 진실',d:'자외선으로 범인의 옷 가려내기',prereq:'luminol'},
+    ];
+    return `<div class="parch tight"><div class="eyebrow">SCIENCE LAB</div><h2 class="tt">과학 실험실</h2>
+      <p class="lead" style="font-size:14px">실험을 실행하고 퀴즈를 풀면 <b>단서노트</b>에 과학 원리가 하나씩 정리됩니다. 실험은 <b>순서대로</b> 열립니다.</p>
+      <div class="simgrid" style="margin-top:14px">${order.map(c=>{
+        const locked=c.prereq&&!CLUES[c.prereq];
+        return `<div class="simcard ${locked?'locked':''}" ${locked?'':`onclick="openSim('${c.id}')"`}>
+          ${CLUES[c.id]?'<span class="done">✓ 완료</span>':(locked?'<span class="soon">🔒 잠김</span>':'')}
+          <div class="ic">${c.ic}</div><h3>${c.t}</h3><p>${locked?'이전 실험을 먼저 완료하세요':c.d}</p></div>`;
+      }).join('')}</div></div>`;
+  }
+  if(APP.labView==='candle') return renderCandle();
+  if(APP.labView==='polar') return renderPolar();
+  if(APP.labView==='luminol') return renderLuminol();
+  if(APP.labView==='photo') return renderPhoto();
+}
+function openSim(id){APP.labView=id;renderRoot();window.scrollTo({top:0,behavior:'smooth'});}
+function backToLab(){APP.labView='list';renderRoot();}
+function collectClue(id,msg){CLUES[id]=true;updateBadge();
+  return `<div class="fb ok show" style="margin-top:16px">📒 단서노트에 <b>${NOTES[id].title}</b> 원리가 정리되었습니다!<br>${msg||''}</div>
+  <div class="btnrow"><button class="btn ghost" onclick="backToLab()">← 실험실로</button><button class="btn gold" onclick="setTab('note')">📒 단서노트 보기</button></div>`;
+}
+
+/* ---- candle ---- */
+function renderCandle(){
+  setTimeout(()=>startParticles(),30);
+  return `<button class="backbtn" onclick="backToLab()">← 실험실</button>
+  <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #1</div><h2 class="tt">물을 빨아올리는 양초</h2>
+    <p class="lead" style="font-size:14px">단서 카드가 <b>패트리 접시 아래</b>에 깔려 있다. 만질 수 있는 건 <b>컵</b>뿐!<br><b>Mission — 접시에 손대지 않고 단서를 꺼내라.</b></p></div>
+  <div class="lab">
+    <div class="hint" id="e1hint">① 토치로 양초에 불을 붙이세요.</div>
+    <div class="ctable">
+      <div class="cardEl" id="cardEl">✦ 단서 카드 ✦</div>
+      <div class="liftgrp" id="liftgrp">
+        <div class="cup" id="cup"><div class="inwater" id="inwater"></div></div>
+        <div class="pdish"><div class="water-tint" id="wtint"></div><div class="candle"><div class="flame" id="flame"></div></div></div>
+        <div class="stick" id="stick">🔗 컵·접시 달라붙음!</div>
+      </div>
+    </div>
+    <div class="btnrow" style="justify-content:center">
+      <button class="btn gold" id="bLight" onclick="e1Light()">🔥 불 붙이기</button>
+      <button class="btn" id="bCover" onclick="e1Cover()" disabled>🥛 컵으로 덮기</button>
+      <button class="btn ghost" id="bLift" onclick="e1Lift()" disabled>⬆️ 컵 들어올리기</button>
+    </div>
+    <div id="e1after"></div>
+    <div class="subpanel">
+      <div class="hint" style="color:#e6c873;margin-bottom:8px">🔬 입자 운동으로 보는 압력 차이</div>
+      <canvas id="pcanvas" class="simcanvas" width="320" height="210"></canvas>
+      <div class="btnrow" style="justify-content:center;margin-top:10px">
+        <button class="btn gold" onclick="setHeat(true)">🔥 가열 (불 켜짐)</button>
+        <button class="btn ghost" onclick="setHeat(false)">❄️ 냉각 (불 꺼짐)</button></div>
+      <div style="max-width:320px;margin:12px auto 0">
+        <div style="color:#cdb98e;font-size:12px">컵 속 압력</div><div class="pbar"><i id="pIn" style="background:#ff8a5c;width:80%"></i></div>
+        <div style="color:#cdb98e;font-size:12px;margin-top:6px">바깥 대기압</div><div class="pbar"><i id="pOut" style="background:#7fc7e6;width:80%"></i></div></div>
+      <p class="lead" id="pexplain" style="font-size:13px;color:#cdb98e;text-align:center;margin-top:12px">불이 타는 동안 컵 속 공기가 뜨거워 입자가 <b style="color:#ff8a5c">빠르게</b> 움직여요. (압력 높음)</p>
+    </div>
+    <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.candle,'양초 실험 영상')}</div>
+  </div>`;
+}
+function e1Light(){$('#flame').classList.add('lit');$('#bLight').disabled=true;$('#bCover').disabled=false;$('#e1hint').textContent='② 불붙은 양초를 컵으로 덮으세요. (불에 직접 닿지 않게!)';setHeat(true);}
+function e1Cover(){
+  $('#bCover').disabled=true;$('#cup').classList.add('down');$('#e1hint').textContent='관찰 중… 불이 꺼지고 컵 속 공기가 식습니다.';setHeat(false);
+  setTimeout(()=>$('#flame').classList.remove('lit'),900);
+  setTimeout(()=>{$('#inwater').style.height='60px';$('#wtint').style.opacity='1';$('#stick').classList.add('show');$('#e1hint').innerHTML='<b style="color:#9fd6e8">대기압이 물을 밀어 올리고, 컵과 접시가 달라붙었습니다!</b> 이제 컵을 들어올려 보세요.';$('#bLift').disabled=false;},1700);
+}
+function e1Lift(){
+  $('#bLift').disabled=true;$('#liftgrp').classList.add('up');
+  $('#e1hint').textContent='컵을 드니 달라붙은 접시가 함께 올라옵니다!';
+  setTimeout(()=>{
+    const card=$('#cardEl');
+    card.classList.add('show','clickable');
+    card.innerHTML='✦ 단서 카드 ✦<span class="tap">👆 클릭해서 확인</span>';
+    card.onclick=e1RevealCard;
+    $('#e1hint').innerHTML='<b style="color:#e6c873">접시 아래 숨어 있던 단서 카드 발견!</b> 카드를 클릭하세요.';
+  },1100);
+}
+function e1RevealCard(){
+  const card=$('#cardEl'); if(card.dataset.read) return; card.dataset.read='1';
+  card.classList.remove('clickable'); card.onclick=null; card.innerHTML='✦ 단서 카드 ✦';
+  $('#e1after').innerHTML=e1Clue();
+  setTimeout(()=>document.getElementById('e1after').scrollIntoView({behavior:'smooth',block:'center'}),60);
+}
+function e1Clue(){
+  return `<div class="clue"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+    보석이 사라진 당일 밤, 대장간은 환하게 불이 켜져 있었고<br>무기 만드는 소리가 온 동네에 계속 울려퍼졌다.</div>
+  <div class="qcard"><div class="q">Q. 이 단서로 혐의가 풀리는 용의자는?</div>
+    <div class="choices"><div class="choice" onclick="e1Pick(this,false)">가이우스 (약제사)</div><div class="choice" onclick="e1Pick(this,true)">루시우스 (대장장이)</div><div class="choice" onclick="e1Pick(this,false)">카밀라 (귀족)</div></div>
+    <div class="fb" id="e1fb"></div></div>`;
+}
+function e1Pick(el,ok){const fb=$('#e1fb');
+  if(ok){el.classList.add('right');document.querySelectorAll('#e1after .choice').forEach(c=>c.style.pointerEvents='none');
+    fb.className='fb ok show';fb.innerHTML='정답! 밤새 대장간에서 일한 <b>알리바이</b> 성립 → 루시우스 제외.';
+    fb.insertAdjacentHTML('afterend', speechBubble('lucius',`"고맙소, 수사관 ${D.name||'님'}! 그날 밤 난 대장간에서 일하고 있었소. 과학으로 누명을 벗겨주어 정말 고맙소!"`)+collectClue('candle','대기압·샤를의 법칙이 정리되었습니다.'));
+  }else{el.classList.add('wrong');fb.className='fb no show';fb.innerHTML='단서는 <b>대장간</b>과 <b>무기 만드는 소리</b>를 말하고 있어요.';setTimeout(()=>el.classList.remove('wrong'),400);}
+}
+/* particle sim */
+let pSim={heat:true,parts:[],rise:0,raf:0};
+function setHeat(h){pSim.heat=h;const pin=document.getElementById('pIn'),exp=document.getElementById('pexplain');
+  if(pin){pin.style.width=(h?80:34)+'%';pin.style.background=h?'#ff8a5c':'#6fa8c8';}
+  if(exp)exp.innerHTML=h?'불이 타는 동안 컵 속 공기가 뜨거워 입자가 <b style="color:#ff8a5c">빠르게</b> 움직여요. (압력 높음)':'불이 꺼지면 공기가 식어 입자가 <b style="color:#7fc7e6">느려지고</b> 컵 속 압력이 낮아져요 → 더 센 바깥 대기압이 물을 위로 밀어 올립니다.';
+}
+function startParticles(){
+  const cv=document.getElementById('pcanvas'); if(!cv) return; const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height; const gas={x0:96,y0:24,x1:224}; const waterTop=150;
+  if(pSim.parts.length===0){for(let i=0;i<14;i++)pSim.parts.push({x:gas.x0+Math.random()*(gas.x1-gas.x0),y:gas.y0+Math.random()*100,a:Math.random()*6.28});}
+  pSim.heat=true; pSim.rise=0; cancelAnimationFrame(pSim.raf);
+  function arrowUp(x,y0,y1){ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.moveTo(x-5,y1+7);ctx.lineTo(x,y1);ctx.lineTo(x+5,y1+7);ctx.stroke();}
+  function loop(){
+    if(!cv.isConnected){cancelAnimationFrame(pSim.raf);return;}
+    const spd=pSim.heat?2.3:0.7; const target=pSim.heat?0:42; pSim.rise+=(target-pSim.rise)*0.05;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle='#06090d'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(60,140,200,.45)'; ctx.fillRect(0,waterTop,W,H-waterTop);
+    ctx.fillStyle='rgba(80,170,230,.6)'; ctx.fillRect(gas.x0-6,waterTop-pSim.rise,(gas.x1-gas.x0)+12,pSim.rise+(H-waterTop));
+    ctx.strokeStyle='rgba(200,225,235,.7)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(gas.x0-8,waterTop+8);ctx.lineTo(gas.x0-8,gas.y0-6);ctx.lineTo(gas.x1+8,gas.y0-6);ctx.lineTo(gas.x1+8,waterTop+8);ctx.stroke();
+    const gy1=waterTop-pSim.rise;
+    pSim.parts.forEach(p=>{p.a+=(Math.random()-.5)*.3;p.x+=Math.cos(p.a)*spd;p.y+=Math.sin(p.a)*spd;
+      if(p.x<gas.x0){p.x=gas.x0;p.a=Math.PI-p.a;}if(p.x>gas.x1){p.x=gas.x1;p.a=Math.PI-p.a;}
+      if(p.y<gas.y0){p.y=gas.y0;p.a=-p.a;}if(p.y>gy1-4){p.y=gy1-4;p.a=-p.a;}
+      ctx.beginPath();ctx.arc(p.x,p.y,4,0,6.28);ctx.fillStyle=pSim.heat?'#ff9b4a':'#7fc7e6';ctx.fill();});
+    if(!pSim.heat){ctx.strokeStyle='rgba(127,199,230,.9)';ctx.lineWidth=2;[44,72,248,276].forEach(x=>arrowUp(x,182,162));}
+    ctx.fillStyle='#8aa'; ctx.font="11px 'Song Myung',serif"; ctx.textAlign='center';
+    ctx.fillText('컵 속 기체',(gas.x0+gas.x1)/2,gas.y0+10);
+    pSim.raf=requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+/* ---- polarization (wave) ---- */
+let polState={ang:70,t:0,raf:0,running:false};
+function renderPolar(){
+  setTimeout(()=>startPolar(70),30);
+  return `<button class="backbtn" onclick="backToLab()">← 실험실</button>
+  <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #2</div><h2 class="tt">편광 실험 — 빛의 길을 열어라</h2>
+    <p class="lead" style="font-size:14px">빛은 <b>물결(파동)</b>처럼 진동하며 나아갑니다. 편광판 1을 지난 빛은 <b>한 방향</b>으로만 진동해요. 편광판 2를 <b>90°로 돌리면</b> 그 빛이 통과하지 못해 <b>캄캄하게 차단</b>됩니다. 편광판 2를 돌려 빛의 길을 열어 보세요.</p></div>
+  <div class="lab">
+    <div class="hint">슬라이더로 편광판 2를 회전 — 두 판이 <b>나란하면 환하게</b>, <b>직각이면 막힙니다.</b></div>
+    <canvas id="polcv" class="simcanvas" width="480" height="240"></canvas>
+    <div class="readout">
+      <div class="gauge"><div class="v" id="gAng">70°</div><div class="l">편광판 2 회전각</div></div>
+      <div class="gauge"><div class="v" id="gTr">적음</div><div class="l">빛 통과량</div></div></div>
+    <div class="dialwrap"><input type="range" min="0" max="90" value="70" id="dial" oninput="startPolar(this.value)"></div>
+    <div id="polafter"></div>
+  </div>`;
+}
+function startPolar(v){
+  polState.ang=+v; const cv=document.getElementById('polcv'); if(!cv) return;
+  const t=Math.cos(polState.ang*Math.PI/180)**2;
+  const ga=document.getElementById('gAng'); if(ga)ga.textContent=polState.ang+'°';
+  const gt=document.getElementById('gTr'); if(gt)gt.textContent=t>0.8?'많음 ☀️':t>0.3?'보통':'없음 🌑';
+  const after=document.getElementById('polafter');
+  if(after&&t>=0.9&&!after.dataset.shown){after.dataset.shown='1';after.innerHTML=polQuizHTML();}
+  if(!polState.running){polState.running=true;polLoop(cv,cv.getContext('2d'));}
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function polLoop(cv,ctx){
+  if(!cv.isConnected){polState.running=false;cancelAnimationFrame(polState.raf);return;}
+  polState.t+=0.09; drawPol(ctx,polState.ang,polState.t);
+  polState.raf=requestAnimationFrame(()=>polLoop(cv,ctx));
+}
+function drawPol(ctx,ang,phase){
+  const W=480,H=240,my=120,A=24,k=0.16,f1=165,f2=315; ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#06090d'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#ffb43c'; ctx.beginPath(); ctx.arc(34,my,18,0,6.28); ctx.fill();
+  ctx.strokeStyle='#ffce5c'; ctx.lineWidth=2; for(let i=0;i<8;i++){const a=i*Math.PI/4; ctx.beginPath(); ctx.moveTo(34+Math.cos(a)*22,my+Math.sin(a)*22); ctx.lineTo(34+Math.cos(a)*28,my+Math.sin(a)*28); ctx.stroke();}
+  function wave(x0,x1,amp,color,alpha){ctx.strokeStyle=color;ctx.globalAlpha=alpha;ctx.lineWidth=2.4;ctx.beginPath();for(let x=x0;x<=x1;x+=2){const y=my+Math.sin((x-x0)*k+phase)*amp;if(x===x0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.globalAlpha=1;}
+  wave(60,f1-32,A*0.7,'#ffd86b',0.9); wave(60,f1-32,A*0.4,'#ffe9a0',0.5);   // unpolarized (여러 방향)
+  wave(f1+32,f2-32,A,'#5fe0ff',0.95);                                       // polarized
+  const ca=Math.abs(Math.cos(ang*Math.PI/180)),inten=ca*ca;
+  wave(f2+32,396,A*ca,'#5fe0ff',Math.max(0.14,inten));                      // transmitted
+  function filt(cx,rot,color){ctx.save();ctx.beginPath();ctx.arc(cx,my,40,0,6.28);ctx.fillStyle='rgba(255,255,255,.05)';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=color;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,my,40,0,6.28);ctx.clip();ctx.translate(cx,my);ctx.rotate(rot*Math.PI/180);ctx.strokeStyle=color;ctx.lineWidth=2.2;
+    for(let i=-4;i<=4;i++){ctx.beginPath();ctx.moveTo(i*9,-44);ctx.lineTo(i*9,44);ctx.stroke();}ctx.restore();}
+  filt(f1,0,'#7fc7e6'); filt(f2,ang,'#e6c873');
+  ctx.fillStyle='#0a0d12'; rr(ctx,404,58,64,124,6); ctx.fill();
+  ctx.globalAlpha=inten; ctx.fillStyle='#e9dcc0'; rr(ctx,408,62,56,116,4); ctx.fill();
+  ctx.fillStyle='#7e1f1f'; ctx.font="11px 'Song Myung',serif"; ctx.textAlign='center';
+  ctx.fillText('날카로움',436,94); ctx.fillStyle='#2a2012'; ctx.fillText('→ 원형 혈흔',436,110);
+  ctx.fillStyle='#7e1f1f'; ctx.fillText('뭉툭함',436,140); ctx.fillStyle='#2a2012'; ctx.fillText('→ 네모 혈흔',436,156);
+  ctx.globalAlpha=1; ctx.fillStyle='#9ccbe0'; ctx.font="11px 'Song Myung',serif";
+  ctx.fillText('편광판 1 (고정)',f1,202); ctx.fillStyle='#e6c873'; ctx.fillText('편광판 2 (회전)',f2,202);
+}
+function polQuizHTML(){
+  return `<div class="fb ok show">빛의 길이 열렸습니다! 숨겨진 단서가 보입니다. 🔍</div>
+   <div class="qcard"><div class="q">Q1. 편광판 2를 <b>90°로 돌리면</b> 빛은 어떻게 될까요?</div>
+     <div class="choices"><div class="choice" onclick="polQ(this,1,false)">더 환하게 통과한다</div><div class="choice" onclick="polQ(this,1,true)">통과하지 못하고 차단된다</div><div class="choice" onclick="polQ(this,1,false)">색이 바뀐다</div></div><div class="fb" id="pq1"></div></div>
+   <div class="qcard" id="q2box" style="display:none"><div class="q">Q2. 빛이 <b>가장 환하게</b> 통과하는 건 두 편광판이 어떨 때?</div>
+     <div class="choices"><div class="choice" onclick="polQ(this,2,true)">나란할 때 (0°)</div><div class="choice" onclick="polQ(this,2,false)">비스듬할 때 (45°)</div><div class="choice" onclick="polQ(this,2,false)">직각일 때 (90°)</div></div><div class="fb" id="pq2"></div></div>
+   <div id="polClue"></div>`;
+}
+function polQ(el,n,ok){const fb=document.getElementById('pq'+n);
+  if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
+    if(n===1){fb.innerHTML='맞아요! 진동 방향이 막혀 빛이 모두 차단됩니다.';document.getElementById('q2box').style.display='block';}
+    if(n===2){fb.innerHTML='정답! 두 편광판이 나란하면 빛이 그대로 통과해 가장 밝습니다.';
+      document.getElementById('polClue').innerHTML=`<div class="clue"><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>범행 도구가 <b style="color:#7e1f1f">날카롭다면</b> 혈흔은 <b style="color:#7e1f1f">원의 형태</b>,<br>뭉툭하다면 혈흔은 <b>네모난 형태</b>. 진짜 혈흔을 찾아라.</div>`+collectClue('polar','빛의 편광 원리가 정리되었습니다.');}
+  }else{el.classList.add('wrong');fb.className='fb no show';fb.innerHTML='슬라이더를 직접 움직여 밝기 변화를 관찰해 보세요.';setTimeout(()=>el.classList.remove('wrong'),400);}
+}
+
+/* ---- luminol ---- */
+function renderLuminol(){
+  return `<button class="backbtn" onclick="backToLab()">← 실험실</button>
+  <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #3</div><h2 class="tt">루미놀 — 진짜 혈흔을 찾아라</h2>
+    <p class="lead" style="font-size:14px">범죄 현장에 <b>원 형태</b>와 <b>네모 형태</b>의 붉은 흔적이 있다. 하나는 진짜 피, 하나는 색소일 뿐. 어둠 상자 속에서 <b>루미놀</b>을 뿌려 진짜 혈흔을 찾아라.</p></div>
+  <div class="lab">
+    <div class="hint" id="lmhint">루미놀을 분무하면 진짜 혈액이 청색으로 빛납니다.</div>
+    <div class="darkbox">
+      <div class="spec"><div class="bshape circle" id="bc">원형 흔적</div><div class="cap">원 모양 접시</div></div>
+      <div class="spec"><div class="bshape square" id="bs">네모 흔적</div><div class="cap">네모 모양 접시</div></div></div>
+    <div class="btnrow" style="justify-content:center"><button class="btn gold" id="bSpray" onclick="lmSpray()">💧 루미놀 분무</button></div>
+    <div id="lmafter"></div>
+    <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.luminol,'루미놀 실험 영상')}</div>
+  </div>`;
+}
+function lmSpray(){$('#bSpray').disabled=true;$('#lmhint').textContent='분무 중…';
+  setTimeout(()=>{const bc=$('#bc');bc.classList.add('glow');bc.innerHTML='💠<br>청색 발광!';$('#bs').innerHTML='반응 없음<br>(붉은 색소)';
+    $('#lmhint').innerHTML='<b style="color:#37e2ff">원형 흔적이 발광 — 진짜 혈흔!</b>';
+    $('#lmafter').innerHTML=`<div class="qcard"><div class="q">Q. 진짜 혈흔은 <b>원형</b>. 편광 단서의 규칙(날카로움→원형)에 따르면 범행 도구는?</div>
+      <div class="choices"><div class="choice" onclick="lmPick(this,false)">뭉툭한 도구</div><div class="choice" onclick="lmPick(this,true)">날카로운 도구</div></div><div class="fb" id="lmfb"></div></div>`;},1100);
+}
+function lmPick(el,ok){const fb=$('#lmfb');
+  if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
+    fb.innerHTML='정답! 날카로운 도구 → <b>플라비우스·카밀라</b>로 압축. 뭉툭한 절구를 든 <b>가이우스</b>는 제외됩니다.';
+    fb.insertAdjacentHTML('afterend', speechBubble('gaius',`"수사관 ${D.name||'님'}, 제 절구는 뭉툭하답니다. 누명을 풀어주셔서 정말 감사합니다!"`)+collectClue('luminol','루미놀 화학발광 원리가 정리되었습니다.'));
+  }else{el.classList.add('wrong');fb.className='fb no show';fb.innerHTML='편광에서 얻은 규칙을 떠올려보세요. 원형 혈흔 = 날카로운 도구!';setTimeout(()=>el.classList.remove('wrong'),400);}
+}
+
+/* ---- photochromic ---- */
+let uvOn=false;
+function renderPhoto(){
+  uvOn=false;
+  return `<button class="backbtn" onclick="backToLab()">← 실험실</button>
+  <div class="parch tight" style="margin-top:12px"><div class="eyebrow">수사기법 #4</div><h2 class="tt">광변색 — 태양 아래 진실</h2>
+    <p class="lead" style="font-size:14px"><b>사제의 증언:</b> “범인은 분명 알록달록한 옷을 입고 있었는데, 보석이 사라지고 세상이 어두워지니 옷 색깔이 점점 하얗게 변했어요…” 습격은 <b>자외선이 강한 낮</b>에 있었다. 남은 두 용의자의 옷을 자외선으로 비춰 보라.</p></div>
+  <div class="lab">
+    <div class="uvstage" id="uvstage">
+      <div class="garments">
+        <div><div class="cloth guard" id="clG"></div><div class="gcap">플라비우스(경비병)의 옷</div></div>
+        <div><div class="cloth noble-dark" id="clN"></div><div class="gcap">카밀라(귀족)의 옷</div></div></div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn gold" id="bUV" onclick="uvToggle()">🔦 자외선 램프 켜기 (낮)</button>
+        <div style="color:#cbbfe0;font-size:12.5px;margin-top:10px" id="uvlabel">지금: 보석이 사라진 뒤 — 세상이 어둡다 (자외선 없음)</div></div></div>
+    <div id="phafter"></div>
+    <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.photo,'광변색 안료 실험 영상')}</div>
+  </div>`;
+}
+function uvToggle(){uvOn=!uvOn;const N=$('#clN'),st=$('#uvstage');
+  if(uvOn){st.classList.add('on');$('#bUV').textContent='🌑 램프 끄기 (어둠)';$('#uvlabel').textContent='지금: 자외선이 강한 낮 — 자외선 ON';N.classList.remove('noble-dark');N.classList.add('noble-uv');}
+  else{st.classList.remove('on');$('#bUV').textContent='🔦 자외선 램프 켜기 (낮)';$('#uvlabel').textContent='지금: 세상이 어둡다 — 자외선 없음';N.classList.remove('noble-uv');N.classList.add('noble-dark');}
+  if(!$('#phafter').innerHTML){
+    $('#phafter').innerHTML=`<div class="qcard"><div class="q">Q. 경비병 옷은 항상 알록달록(평범한 염색), 귀족 옷은 빛이 있을 땐 알록달록·없으면 하얗게 변합니다. 사제 증언과 일치하는 <b>범인의 옷</b>은?</div>
+      <div class="choices"><div class="choice" onclick="phPick(this,false)">경비병의 옷</div><div class="choice" onclick="phPick(this,true)">귀족의 옷</div></div><div class="fb" id="phfb"></div></div>`;
+  }
+}
+function phPick(el,ok){const fb=$('#phfb');
+  if(ok){el.classList.add('right');el.parentElement.querySelectorAll('.choice').forEach(c=>c.style.pointerEvents='none');fb.className='fb ok show';
+    fb.innerHTML='정답! 자외선에 색이 변하는 <b>광변색 옷 = 카밀라</b>. 평범한 염색옷을 입은 <b>플라비우스</b>는 제외됩니다. 이제 범인은 한 명!';
+    fb.insertAdjacentHTML('afterend', speechBubble('flavius',`"수사관 ${D.name||'님'}, 제 옷은 빛이 있어도 색이 그대로였지요. 의심을 거둬주셔서 감사합니다!"`)+collectClue('photo','광변색 광화학 반응 원리가 정리되었습니다. 스토리 탭에서 범인을 지목하세요!'));
+  }else{el.classList.add('wrong');fb.className='fb no show';fb.innerHTML='증언의 핵심: “빛이 사라지자 옷이 하얗게 변했다”. 빛에 따라 색이 변하는 옷은 누구 것일까요? 램프를 껐다 켜며 비교하세요.';setTimeout(()=>el.classList.remove('wrong'),400);}
+}
+
+/* ============ NOTEBOOK ============ */
+function renderNote(){
+  const n=cluesCount();
+  return `<div class="parch"><div class="eyebrow">CLUE NOTEBOOK</div><h2 class="tt">단서노트</h2>
+    <div class="nbprog">수집한 과학 원리 ${n} / 4</div>
+    <p class="lead" style="font-size:13.5px;text-align:center;color:#6a5230">실험을 완료할 때마다 단서와 과학 원리가 이곳에 정리됩니다.</p>
+    <div class="nbgrid" style="margin-top:14px">${NOTE_ORDER.map(k=>{const e=NOTES[k];const open=CLUES[k];
+      return `<div class="nbentry ${open?'unlocked':'locked'}" ${open?`onclick="this.classList.toggle('open')"`:''}>
+        <div class="h"><span>${open?e.ic:'🔒'} ${open?e.title:'??? — 실험 미완료'}</span><span style="font-size:12px">${open?'▾':''}</span></div>
+        ${open?`<div class="b" onclick="event.stopPropagation()"><div style="font-size:12px;color:#8a6a3a;font-family:Cinzel;letter-spacing:1px">${e.sub}</div><div class="clue-mini" style="margin-top:8px">🔎 단서: ${e.clue}</div>${e.body}</div>`:''}</div>`;
+    }).join('')}</div></div>`;
+}
+
+/* ============ MODAL ============ */
+function openDossier(){$('#modalGrid').innerHTML=SUSPECTS.map(s=>suspectCard(s)).join('');$('#modal').classList.add('open');}
+function closeModal(){$('#modal').classList.remove('open');}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+/* ============ ROOT ============ */
+function renderRoot(){
+  if(APP.stage==='creator'){applyMood('dark');stage.innerHTML=renderCreator();updateMini();return;}
+  if(APP.stage==='intro'){stage.innerHTML=renderIntro();updateMini();return;}
+  applyMood(window.won?'bright':'dark');
+  const map={story:renderStory,lab:renderLab,note:renderNote};
+  stage.innerHTML=(map[APP.tab]||renderStory)(); syncTabs(); updateMini();
+}
+renderRoot();
+</script>
+</body>
+</html>
