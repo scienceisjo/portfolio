@@ -278,14 +278,25 @@ body.bright #brightlayer{opacity:1}
 .player{position:absolute;width:42px;height:58px;transform:translate(-50%,-70%);z-index:5;filter:drop-shadow(0 4px 5px rgba(0,0,0,.7));transition:left .05s linear,top .05s linear;pointer-events:none}
 .player svg{width:100%;height:100%}
 .portal{position:absolute;transform:translate(-50%,-50%);z-index:4;cursor:pointer;text-align:center}
-.portal .pdot{display:grid;place-items:center;width:40px;height:40px;margin:0 auto;border-radius:50%;background:radial-gradient(circle,rgba(127,199,230,.5),rgba(40,90,120,.35));border:2px solid #bfeaff;color:#fff;font-size:18px;box-shadow:0 0 16px rgba(127,199,230,.7);animation:ppulse 1.3s ease-in-out infinite}
-.portal.verd .pdot{background:radial-gradient(circle,rgba(230,200,110,.6),rgba(120,90,40,.4));border-color:#e6c873;box-shadow:0 0 18px rgba(230,200,110,.8)}
-.portal.locked .pdot{background:rgba(40,40,46,.7);border-color:#888;box-shadow:none;animation:none}
+.portal .pdot{position:relative;display:grid;place-items:center;width:46px;height:46px;margin:0 auto;border-radius:50%;color:#fff;font-size:18px}
+.portal:not(.locked):not(.verd) .pdot{background:radial-gradient(circle,rgba(175,228,255,.95),rgba(40,120,200,.55) 60%,rgba(20,60,120,0) 78%);box-shadow:0 0 18px 4px rgba(90,180,255,.75),0 0 40px rgba(60,140,255,.45);animation:portalbob 2s ease-in-out infinite}
+.portal:not(.locked):not(.verd) .pdot::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,transparent,rgba(195,238,255,.95),transparent 38%,rgba(120,205,255,.85),transparent 72%,rgba(200,240,255,.6));mix-blend-mode:screen;animation:portalspin 1.5s linear infinite}
+.portal:not(.locked):not(.verd) .pdot::after{content:'';position:absolute;inset:10px;border-radius:50%;background:radial-gradient(circle,#f2faff,rgba(150,215,255,.35));box-shadow:0 0 12px rgba(200,235,255,.9)}
+.portal.verd .pdot{background:radial-gradient(circle,rgba(230,200,110,.6),rgba(120,90,40,.4));border:2px solid #e6c873;box-shadow:0 0 18px rgba(230,200,110,.8);animation:ppulse 1.3s ease-in-out infinite}
+.portal.locked .pdot{background:rgba(40,40,46,.7);border:2px solid #888;box-shadow:none}
+@keyframes portalspin{to{transform:rotate(360deg)}}
+@keyframes portalbob{50%{transform:translateY(-4px)}}
 .portal .plabel{display:inline-block;margin-top:3px;font-family:'Song Myung';font-size:11px;color:#fff;background:rgba(8,12,18,.7);padding:1px 7px;border-radius:8px;white-space:nowrap}
 @keyframes ppulse{50%{transform:scale(1.12)}}
 .spot{position:absolute;transform:translate(-50%,-50%);z-index:4}
 .spot span{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(46,160,80,.45),transparent 70%);border:2px solid #7fe0a0;color:#fff;font-size:20px;box-shadow:0 0 18px rgba(80,220,140,.7);animation:ppulse 1.2s ease-in-out infinite}
 .spot.done span{background:radial-gradient(circle,rgba(46,160,80,.6),transparent 70%);animation:none}
+.npc{position:absolute;transform:translate(-50%,-70%);z-index:4;cursor:pointer;text-align:center}
+.npc .ntok{width:40px;height:54px;margin:0 auto;filter:drop-shadow(0 3px 4px rgba(0,0,0,.75))}
+.npc .ntok svg{width:100%;height:100%}
+.npc .nlabel{display:inline-block;margin-top:2px;font-family:'Song Myung';font-size:10.5px;color:#fff;background:rgba(8,12,18,.72);padding:1px 7px;border-radius:8px;white-space:nowrap}
+.npc::after{content:'!';position:absolute;top:-12px;left:50%;transform:translateX(-50%);color:#ffd86b;font-family:'Cinzel';font-weight:900;font-size:17px;text-shadow:0 0 6px #000;animation:nbob 1s ease-in-out infinite}
+@keyframes nbob{50%{transform:translateX(-50%) translateY(-4px)}}
 .mapprompt{min-height:46px;display:flex;justify-content:center;align-items:center;margin-top:10px}
 .mapmsg{font-family:'Song Myung';color:#e6c873;font-size:14px}
 .dpad{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px;user-select:none}
@@ -619,11 +630,16 @@ const WORLD=[
      {to:2,x:50,y:33,label:'빛의 신전'},
      {to:3,x:83,y:52,label:'지하 제단'},
      {to:4,x:50,y:84,label:'연회장'},
-   ], verdictPortal:{x:50,y:50}},
- {key:'mapCandle', name:'봉인된 문',  start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:84,label:'광장으로'}], spot:{x:50,y:44,sim:'candle', label:'양초 트릭 조사'}},
- {key:'mapPolar',  name:'빛의 신전',  start:[50,84],walk:[14,48,86,92], portals:[{to:0,x:9,y:88,label:'광장으로'}], spot:{x:50,y:62,sim:'polar',  label:'빛의 문 조사'}},
- {key:'mapLuminol',name:'지하 제단',  start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:86,label:'광장으로'}], spot:{x:50,y:42,sim:'luminol',label:'혈흔 조사'}},
- {key:'mapPhoto',  name:'연회장',     start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:86,label:'광장으로'}], spot:{x:50,y:50,sim:'photo',  label:'옷·보석 조사'}},
+   ], verdictPortal:{x:50,y:50},
+   npcs:[{x:63,y:42,role:'priest',name:'사제',cfg:PRIEST}]},
+ {key:'mapCandle', name:'봉인된 문',  start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:84,label:'광장으로'}], spot:{x:50,y:44,sim:'candle', label:'양초 트릭 조사'},
+   npcs:[{x:30,y:74,role:'guard',name:'플라비우스',cfg:SUSPECTS[2].cfg}]},
+ {key:'mapPolar',  name:'빛의 신전',  start:[50,84],walk:[14,48,86,92], portals:[{to:0,x:9,y:88,label:'광장으로'}], spot:{x:50,y:62,sim:'polar',  label:'빛의 문 조사'},
+   npcs:[{x:28,y:82,role:'oracle',name:'신관',cfg:PRIEST}]},
+ {key:'mapLuminol',name:'지하 제단',  start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:86,label:'광장으로'}], spot:{x:50,y:42,sim:'luminol',label:'혈흔 조사'},
+   npcs:[{x:30,y:74,role:'gaius',name:'가이우스',cfg:SUSPECTS[1].cfg}]},
+ {key:'mapPhoto',  name:'연회장',     start:[50,82],walk:[12,42,88,90], portals:[{to:0,x:9,y:86,label:'광장으로'}], spot:{x:50,y:50,sim:'photo',  label:'옷·보석 조사'},
+   npcs:[{x:72,y:74,role:'camilla',name:'카밀라',cfg:SUSPECTS[3].cfg}]},
 ];
 const SIM_PREREQ={candle:null,polar:'candle',luminol:'polar',photo:'luminol'};
 function portalLocked(p){ const m=WORLD[p.to]; if(!m.spot) return false; const req=SIM_PREREQ[m.spot.sim]; return req&&!CLUES[req]; }
@@ -632,15 +648,16 @@ function renderMapWorld(){
   const i=APP.mapI||0, m=WORLD[i];
   setTimeout(()=>mapInit(),40);
   const portals=m.portals.map((p,idx)=>{const lk=portalLocked(p);
-    return `<div class="portal ${lk?'locked':''}" style="left:${p.x}%;top:${p.y}%" onclick="mapClickPortal(${idx})"><span class="pdot">${lk?'🔒':'⮕'}</span><span class="plabel">${p.label}</span></div>`;}).join('');
+    return `<div class="portal ${lk?'locked':''}" style="left:${p.x}%;top:${p.y}%" onclick="mapClickPortal(${idx})"><span class="pdot">${lk?'🔒':''}</span><span class="plabel">${p.label}</span></div>`;}).join('');
   const verd = (m.verdictPortal&&cluesCount()>=4)?`<div class="portal verd" style="left:${m.verdictPortal.x}%;top:${m.verdictPortal.y}%" onclick="setTab('verdict')"><span class="pdot">⚖️</span><span class="plabel">범인 지목</span></div>`:'';
   const spot = m.spot?`<div class="spot ${CLUES[m.spot.sim]?'done':''}" style="left:${m.spot.x}%;top:${m.spot.y}%"><span>${CLUES[m.spot.sim]?'✓':'🔬'}</span></div>`:'';
+  const npcs=(m.npcs||[]).map((n,idx)=>`<div class="npc" style="left:${n.x}%;top:${n.y}%" onclick="npcOpen(${i},${idx})"><div class="ntok">${n.cfg?mc(n.cfg):'📜'}</div><span class="nlabel">💬 ${n.name}</span></div>`).join('');
   const done=cluesCount();
   return `<div class="parch tight" style="margin-top:0"><div class="eyebrow">EXPLORE · 단서 ${done}/4</div><h2 class="tt">🗺️ ${m.name}</h2>
     <p class="lead" style="font-size:13px">WASD·방향키 또는 아래 버튼으로 이동. <b>⮕ 포탈</b>에 닿으면 장소 이동, <b>🔬 지점</b>에서 <b>조사</b> 버튼으로 실험을 합니다.${i===0?' 모든 단서를 모으면 중앙 제단(⚖️)에서 범인을 지목하세요.':''}</p></div>
    <div class="mapwrap">
      <div class="mapview" id="mapview" style="background-image:url('${IMAGES[m.key]||''}')">
-       ${portals}${verd}${spot}
+       ${portals}${verd}${spot}${npcs}
        <div class="player" id="player">${mc(D)}</div>
      </div>
      <div class="mapprompt" id="mapprompt"></div>
@@ -674,13 +691,37 @@ function mapInit(){
   loop();
 }
 function checkZones(m){
-  const pr=document.getElementById('mapprompt'); let msg='';
+  const pr=document.getElementById('mapprompt'); if(!pr) return; let html='',key='';
   for(let idx=0;idx<m.portals.length;idx++){const p=m.portals[idx],d=Math.hypot(MAP.x-p.x,MAP.y-p.y);
-    if(d<7){ if(portalLocked(p)){msg='🔒 이전 단서를 먼저 모으세요';} else if(MAP.cd<=0){mapTravel(p.to);return;} }}
+    if(d<7){ if(!portalLocked(p)){ if(MAP.cd<=0){mapTravel(p.to);return;} } else { html='<span class="mapmsg">🔒 아직 갈 수 없습니다 — 이전 단서를 먼저 모으세요</span>'; key='lock'; } }}
   if(m.verdictPortal&&cluesCount()>=4){const v=m.verdictPortal; if(Math.hypot(MAP.x-v.x,MAP.y-v.y)<7&&MAP.cd<=0){setTab('verdict');return;}}
-  if(m.spot){const sp=m.spot,d=Math.hypot(MAP.x-sp.x,MAP.y-sp.y);
-    if(d<11){ if(pr&&pr.dataset.k!=='spot'){pr.dataset.k='spot'; pr.innerHTML=`<button class="btn gold" onclick="openSim('${sp.sim}')">🔬 ${sp.label}${CLUES[sp.sim]?' (다시 보기)':''}</button>`;} return; }}
-  if(pr){ if(msg){ if(pr.dataset.k!=='m'+msg){pr.dataset.k='m'+msg; pr.innerHTML='<span class="mapmsg">'+msg+'</span>';}} else if(pr.dataset.k){pr.dataset.k=''; pr.innerHTML='';} }
+  if(m.npcs){for(let n=0;n<m.npcs.length;n++){const npc=m.npcs[n]; if(Math.hypot(MAP.x-npc.x,MAP.y-npc.y)<10){ html=`<button class="btn gold" onclick="npcOpen(${APP.mapI||0},${n})">💬 ${npc.name}와(과) 대화</button>`; key='npc'+n; }}}
+  if(m.spot){const sp=m.spot; if(Math.hypot(MAP.x-sp.x,MAP.y-sp.y)<10){ html=`<button class="btn gold" onclick="openSim('${sp.sim}')">🔬 ${sp.label}${CLUES[sp.sim]?' (다시)':''}</button>`; key='spot'; }}
+  if(pr.dataset.k!==key){ pr.dataset.k=key; pr.innerHTML=html; }
+}
+/* ----- NPC dialogue ----- */
+let DLG=null;
+function npcOpen(mi,ni){ const npc=WORLD[mi].npcs[ni]; DLG={lines:npcLines(npc.role),name:npc.name,cfg:npc.cfg,i:0}; dlgRender(); }
+function dlgRender(){ const l=DLG.lines[DLG.i], last=DLG.i>=DLG.lines.length-1;
+  openModal(`<div class="speech" style="margin-top:0;align-items:flex-start"><div class="sav">${DLG.cfg?mc(DLG.cfg):'📜'}</div>
+     <div class="bub"><b style="color:#7e1f1f;font-family:Cinzel;font-size:12px;letter-spacing:1px">${DLG.name}</b><br>${l}</div></div>
+   <div class="cut-progress" style="margin-top:8px">${DLG.i+1} / ${DLG.lines.length}</div>
+   <div class="btnrow" style="justify-content:flex-end">${last?'<button class="btn gold" onclick="closeModal()">닫기</button>':'<button class="btn gold" onclick="dlgNext()">다음 ▶</button>'}</div>`); }
+function dlgNext(){ DLG.i++; dlgRender(); }
+function npcLines(role){
+  const n=cluesCount(), nm=esc(D.name);
+  if(role==='priest'){
+    if(n===0) return [`수사관 ${nm}, 와주어 정말 고맙소.`,`범인은 <b>안에서 봉인된</b> 신전을 빠져나갔소. 대체 어떻게? 먼저 서쪽 <b>‘봉인된 문’</b>으로 가, 그 비밀을 밝혀주시오.`];
+    if(n===1) return [`문이 힘이 아니라 ‘공기의 힘’으로 열렸다니… 놀랍구려.`,`이제 북쪽 <b>‘빛의 신전’</b>으로 가시오. 태양신 솔께서 실마리를 내려주실 것이오.`];
+    if(n===2) return [`빛이 길을 열어 혈흔의 규칙을 알려주었구려!`,`동쪽 <b>‘지하 제단’</b>으로 내려가, 어느 것이 진짜 피인지 찾으시오.`];
+    if(n===3) return [`범행 도구가 좁혀졌소. 거의 다 왔구려.`,`마지막으로 남쪽 <b>‘연회장’</b>에서 범인의 옷을 밝혀주시오.`];
+    return [`모든 단서가 모였소, 수사관 ${nm}!`,`이제 광장 중앙 제단의 <b>⚖️ 표식</b>으로 가 범인을 지목하시오. 로마의 빛이 그대 손에 달렸소.`];
+  }
+  if(role==='guard'){ if(CLUES.candle) return [`공기의 압력만으로 그 무거운 석판이 들렸다니, 두 눈으로 보고도 믿기 어렵소.`]; return [`내가 지키던 이 문이 분명 안에서 봉인돼 있었는데…`,`무거운 석판이 저절로 들렸소. 직접 <b>조사</b>해 그 트릭을 밝혀보시오.`]; }
+  if(role==='oracle'){ return [`이곳은 태양신 <b>솔</b>의 신전이오.`,`<i>두 개의 빛의 문이 어긋나면 어둠뿐, 하나로 겹쳐질 때 빛이 흐르리라.</i>`,`빛이 통하는 길을 열면, 진실이 모습을 드러낼 것이오.`]; }
+  if(role==='gaius'){ if(CLUES.luminol) return [`…내 절구는 뭉툭하다 하지 않았소. 결백이 밝혀져 다행이오.`]; return [`누, 누구요? 난 그저 약을 짓는 약제사일 뿐이오.`,`진짜 피가 어느 것인지… 정 의심스럽거든 직접 <b>조사</b>해 보시구려.`]; }
+  if(role==='camilla'){ if(CLUES.photo) return [`…어떻게 알았죠? 그 옷의 비밀까지.`]; return [`어머, 수사관님. 이런 곳까지 오시다니.`,`제 옷이 어떻다는 거죠? 호호… 정 궁금하시면 마음껏 빛을 비춰 보세요.`]; }
+  return ['...'];
 }
 function bindMapKeys(){ if(window.__mapKeys) return; window.__mapKeys=true;
   const KM={w:'up',a:'left',s:'down',d:'right',arrowup:'up',arrowleft:'left',arrowdown:'down',arrowright:'right'};
