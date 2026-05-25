@@ -25,6 +25,11 @@ header{position:sticky;top:0;z-index:30;backdrop-filter:blur(3px);background:lin
 .hbtn{font-family:'Song Myung';font-size:12px;color:#cdb98e;background:rgba(255,255,255,.05);border:1px solid rgba(201,164,76,.4);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap}
 .hbtn:hover{color:#241704;background:linear-gradient(180deg,#e6c873,#c9a44c)}
 .visits{font-family:'Cinzel';font-size:12px;color:#e6c873;background:rgba(0,0,0,.25);border:1px solid rgba(201,164,76,.35);border-radius:8px;padding:6px 10px;white-space:nowrap}
+.halllist{margin:0;padding:0 0 0 8px;counter-reset:hof;list-style:none}
+.halllist li{counter-increment:hof;display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid rgba(201,164,76,.18)}
+.halllist li::before{content:counter(hof);min-width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(180deg,#e6c873,#c9a44c);color:#241704;font-family:'Cinzel';font-weight:700;font-size:12px}
+.halllist li:nth-child(1)::before{background:linear-gradient(180deg,#ffe9a8,#e0b54a);box-shadow:0 0 10px rgba(230,200,110,.7)}
+.halllist .hname{font-family:'Song Myung';color:#3a2a16;font-size:15px}
 .miniav svg{width:100%;height:100%}
 .tabs{max-width:940px;margin:8px auto 0;display:flex;gap:4px}
 .tab{flex:1;font-family:'Song Myung';font-size:14px;text-align:center;padding:11px 6px;cursor:pointer;color:#bca878;background:rgba(255,255,255,.03);border:1px solid transparent;border-bottom:none;border-radius:9px 9px 0 0;transition:.15s;position:relative}
@@ -322,6 +327,7 @@ footer .made{color:var(--gold-br);font-size:13px}
     <div class="brand"><div class="seal">CSI</div><h1>CASE FILE 001<small>로마의 사라진 보석</small></h1></div>
     <div style="display:flex;align-items:center;gap:8px">
       <span class="visits" id="visits" title="누적 방문수">👣 …</span>
+      <button class="hbtn" onclick="openHall()" title="명탐정 명예의 전당">🏅 명예의 전당</button>
       <button class="hbtn" onclick="resetState()" title="처음부터 다시 시작">🔄 처음부터</button>
       <div class="miniav" id="miniav"></div>
     </div>
@@ -584,7 +590,7 @@ function pickSuspect(id){
   if(id===CULPRIT){fb.className='fb ok show';fb.innerHTML=`🎉 정답입니다, 수사관 ${D.name}! 범인은 <b>카밀라</b> — 자외선에 반응하는 광변색 옷의 비밀이 밝혀졌습니다. ‘솔리스의 보석’을 되찾고 로마의 평화를 지켰습니다!`;
     window.won=true; applyMood('bright');
     const ei=$('#endimg'); if(ei) ei.innerHTML=`<div class="imgslot" style="aspect-ratio:16/9;margin-top:14px">${imgSlot('victory','엔딩 — 보석을 되찾아 다시 밝아진 로마')}</div>`+renderCertificate();
-    saveState(); setTimeout(openMotivePopup,700);
+    saveState(); setTimeout(openMotivePopup,700); registerDetective();
   }
   else{const why={lucius:'루시우스는 사건 당일 밤 대장간에서 일한 알리바이가 있습니다 (수사 #1).',gaius:'가이우스의 절구는 뭉툭합니다. 진짜 혈흔은 원형=날카로운 도구였죠 (수사 #2·#3).',flavius:'플라비우스의 옷은 평범한 염색이라 빛과 무관하게 색이 그대로입니다 (수사 #4).'}[id];
     fb.className='fb no show';fb.innerHTML='아직 아닙니다. '+why+' 단서를 다시 종합해 보세요.';}
@@ -1178,6 +1184,26 @@ async function loadVisits(){
   }catch(e){ el.style.display='none'; }
 }
 loadVisits();
+// ===== 명탐정 명예의 전당 (Supabase) =====
+async function registerDetective(){
+  if(!_sb) return;
+  if(localStorage.getItem('csi_listed')) return;
+  try{ await _sb.rpc('add_detective',{detective_name:(D.name||'이름 없는 수사관')}); localStorage.setItem('csi_listed','1'); }catch(e){}
+}
+async function openHall(){
+  openModal(`<div class="eyebrow">HALL OF FAME</div><h2 class="tt">🏅 명탐정 명예의 전당</h2>
+    <p class="lead" style="font-size:13px">‘솔리스의 보석’을 되찾고 로마의 평화를 지킨 명탐정들입니다.</p>
+    <div id="hallbody" style="margin-top:10px;max-height:46vh;overflow:auto">불러오는 중…</div>
+    <div class="btnrow" style="justify-content:flex-end;margin-top:12px"><button class="btn gold" onclick="closeModal()">닫기</button></div>`);
+  const body=document.getElementById('hallbody');
+  if(!_sb){ body.innerHTML='<span class="mapmsg">명단을 불러올 수 없습니다 (오프라인).</span>'; return; }
+  try{
+    const {data,error}=await _sb.rpc('top_detectives');
+    if(error) throw error;
+    if(!data||!data.length){ body.innerHTML='<span class="mapmsg">아직 사건을 해결한 명탐정이 없습니다. 첫 번째 주인공이 되어 보세요!</span>'; return; }
+    body.innerHTML='<ol class="halllist">'+data.map(d=>`<li><span class="hname">${esc(d.name)}</span></li>`).join('')+'</ol>';
+  }catch(e){ body.innerHTML='<span class="mapmsg">명단을 불러오지 못했습니다.</span>'; }
+}
 </script>
 </body>
 </html>
