@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>해누리중학교 과학교사 조승재 · AI·디지털 기반 과학 강사요원 양성 직무연수 증빙자료</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --paper:#f5f1e8;
+    --paper-2:#efe9dc;
+    --ink:#21242b;
+    --ink-soft:#3a3e47;
+    --muted:#6f6c63;
+    --line:#d8d0bf;
+    --accent:#11715f;
+    --accent-deep:#0c4f43;
+    --amber:#bf5a30;
+    --card:#fbf8f1;
+    --radius:14px;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(rgba(17,113,95,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(17,113,95,.045) 1px,transparent 1px);
+    background-size:26px 26px;
+    color:var(--ink);
+    font-family:"Pretendard",-apple-system,sans-serif;
+    line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+    padding:0 22px 90px;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto}
+
+  /* ===== Header ===== */
+  header{
+    padding:74px 0 46px;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    opacity:0;transform:translateY(14px);
+    animation:rise .8s .05s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .kicker{
+    display:inline-block;
+    font-size:.74rem;letter-spacing:.22em;font-weight:700;
+    color:var(--accent);text-transform:uppercase;
+    border:1.5px solid var(--accent);
+    padding:5px 12px;border-radius:40px;margin-bottom:22px;
+  }
+  h1{
+    font-family:"Gowun Batang",serif;
+    font-weight:700;
+    font-size:clamp(2rem,5.4vw,3.2rem);
+    line-height:1.18;
+    letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  h1 .accent{color:var(--accent)}
+  .subtitle{
+    margin-top:18px;
+    font-size:clamp(1rem,2.4vw,1.18rem);
+    color:var(--ink-soft);font-weight:600;
+  }
+  .meta{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 22px;
+    font-size:.92rem;color:var(--muted);
+  }
+  .meta span{display:inline-flex;align-items:center;gap:7px}
+  .meta b{color:var(--ink);font-weight:600}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);display:inline-block}
+
+  /* ===== Section ===== */
+  section{margin-top:62px}
+  .sec-head{
+    display:flex;align-items:baseline;gap:16px;margin-bottom:8px;
+  }
+  .sec-no{
+    font-family:"Gowun Batang",serif;
+    font-size:1.05rem;color:var(--amber);font-weight:700;
+    letter-spacing:.04em;
+  }
+  h2{
+    font-family:"Gowun Batang",serif;
+    font-size:clamp(1.4rem,3.4vw,1.85rem);
+    font-weight:700;color:var(--ink);letter-spacing:-.01em;
+  }
+  .sec-desc{
+    color:var(--muted);font-size:.96rem;margin:6px 0 26px;
+    max-width:640px;
+  }
+
+  /* ===== Cards ===== */
+  .grid{display:grid;gap:16px}
+  .grid.two{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:640px){.grid.two{grid-template-columns:1fr}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 24px 20px;
+    position:relative;
+    transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:var(--accent);transform:scaleY(0);transform-origin:top;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 34px -18px rgba(12,79,67,.55);
+    border-color:var(--accent);
+  }
+  .card:hover::before{transform:scaleY(1)}
+
+  .tag{
+    display:inline-block;font-size:.7rem;letter-spacing:.08em;font-weight:700;
+    color:var(--accent-deep);background:rgba(17,113,95,.1);
+    padding:4px 10px;border-radius:30px;margin-bottom:13px;text-transform:uppercase;
+  }
+  .tag.amber{color:var(--amber);background:rgba(191,90,48,.1)}
+  .card h3{
+    font-size:1.12rem;font-weight:700;color:var(--ink);margin-bottom:8px;
+    line-height:1.4;
+  }
+  .card p{font-size:.93rem;color:var(--ink-soft);margin-bottom:16px}
+  .links{display:flex;flex-direction:column;gap:8px}
+  a.btn{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:.9rem;font-weight:600;color:var(--accent-deep);
+    text-decoration:none;
+    padding:9px 14px;border:1px solid var(--line);border-radius:9px;
+    background:var(--paper);
+    transition:all .22s;
+    word-break:break-all;
+  }
+  a.btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  a.btn .arrow{transition:transform .22s;flex:0 0 auto}
+  a.btn:hover .arrow{transform:translateX(4px)}
+  a.btn .label{flex:1}
+  a.btn .sub{font-weight:500;opacity:.7;font-size:.82rem}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px)}
+  .reveal.in{animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+  footer{
+    margin-top:72px;padding-top:26px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:.86rem;text-align:center;line-height:1.9;
+  }
+  footer b{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">증빙자료 · Portfolio</span>
+    <h1>AI·디지털 기반<br><span class="accent">과학 강사요원</span> 양성 직무연수</h1>
+    <p class="subtitle">디지털 과학 탐구 도구 활용 수업 경험 및 바이브 코딩 수업 산출물</p>
+    <div class="meta">
+      <span><b>해누리중학교</b> 과학교사</span>
+      <span><span class="dot"></span> <b>조승재</b></span>
+      <span><span class="dot"></span> 2026</span>
+    </div>
+  </header>
+
+  <!-- ===== Section 01 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">01</span>
+      <h2>디지털 과학 탐구 도구 활용 수업</h2>
+    </div>
+    <p class="sec-desc">센서 측정 데이터를 정량적 모형으로 연결하는 탐구 수업 사례입니다.</p>
+    <div class="grid">
+      <div class="card reveal">
+        <span class="tag">MBL · 데이터 모델링</span>
+        <h3>MBL 데이터 기반 끓는점 모델링 수업</h3>
+        <p>여러 물질의 끓는점을 MBL 온도 센서로 측정하고, 학생이 직접 데이터 전처리와 시각화를 수행한 뒤, 생성형 AI 바이브 코딩으로 끓는점을 수학적으로 정의하는 모형을 제작한 수업입니다. 측정 데이터를 정량적 모형으로 연결하는 탐구 경험을 설계하였으며, AIEDAP 인공지능융합수업 연수에서 배운 내용을 토대로 기획하였습니다.</p>
+        <div class="links">
+          <a class="btn" href="https://joo.is/해누리중조승재수업경험1" target="_blank" rel="noopener">
+            <span class="label">수업 자료 보기 <span class="sub">joo.is/해누리중조승재수업경험1</span></span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">센서 제작 · 측정 · 보정</span>
+        <h3>간이 염분 측정기 만들기 및 센서 보정</h3>
+        <p>학생이 부력과 밀도를 이용해 간이 염분 측정기를 직접 제작하고, 표준 용액으로 측정한 뒤 전기전도도·염도 센서를 기준기로 삼아 보정하여 미지 시료의 염분을 측정하는 탐구 수업입니다. 측정 도구를 직접 만들고, 센서로 보정하며 오차를 분석하는 디지털 과학 탐구 경험을 설계하였습니다.</p>
+        <div class="links">
+          <a class="btn" href="./salinity-meter.pdf" target="_blank" rel="noopener">
+            <span class="label">수업 활동지 보기 <span class="sub">PDF</span></span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">시뮬레이션 · 센서</span>
+        <h3>간이 염분 측정기 시뮬레이션</h3>
+        <p>수업에 활용한 과학 시뮬레이션입니다. 염분을 바꾸면 밀도와 측정기가 떠오른 높이가 실시간으로 변하고, 센서 기준값과 측정기 높이를 나란히 보여주며 보정 곡선을 직접 쌓을 수 있습니다.</p>
+        <div class="links">
+          <a class="btn" href="./염분측정기_시뮬레이션.html" target="_blank" rel="noopener">
+            <span class="label">시뮬레이션 열기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag amber">바이브 코딩 실습</span>
+        <h3>높이 → 염분 변환기</h3>
+        <p>보정 단계에서 사용한 실습용 도구입니다. 표준 용액 데이터로 보정 곡선(최소제곱법)을 만들고, 측정한 높이를 염분으로 변환하는 데이터 분석 활동에 활용합니다.</p>
+        <div class="links">
+          <a class="btn" href="./높이_염분_변환기.html" target="_blank" rel="noopener">
+            <span class="label">변환기 열기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section 02 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">02</span>
+      <h2>직접 개발한 바이브 코딩 과학 수업 도구</h2>
+    </div>
+    <p class="sec-desc">단일 HTML·GitHub Pages 기반으로 제작하여 수업에서 바로 활용한 도구들입니다.</p>
+    <div class="grid two">
+      <div class="card reveal">
+        <span class="tag">중2 과학</span>
+        <h3>과학 탐구 월드</h3>
+        <p>중학교 2학년 과학 학습을 위한 탐구형 웹앱입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/scienceworld/science-exploration-world.html" target="_blank" rel="noopener">
+            <span class="label">사이트 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag amber">게이미피케이션</span>
+        <h3>과학 라이어 게임</h3>
+        <p>과학 개념 복습을 게임으로 전환한 게이미피케이션 학습 도구입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/liargame_/" target="_blank" rel="noopener">
+            <span class="label">사이트 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag amber">게이미피케이션</span>
+        <h3>5초준다</h3>
+        <p>과학·일반 지식을 빠르게 복습하는 스피드 퀴즈형 파티 게임입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/only5seconds/" target="_blank" rel="noopener">
+            <span class="label">사이트 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">주제선택</span>
+        <h3>해누리 오락실</h3>
+        <p>주제선택 수업에서 활용한 두뇌 활동·브레인 브레이크 게임 모음입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/brain-break-lab/" target="_blank" rel="noopener">
+            <span class="label">사이트 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag">수업 게임</span>
+        <h3>CLASS GAME WORLD</h3>
+        <p>수업 중 활용 가능한 클래스 단위 학습 게임입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/brain-break-lab/sonic" target="_blank" rel="noopener">
+            <span class="label">사이트 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section 03 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">03</span>
+      <h2>교외 활동 · 과학 부스 운영</h2>
+    </div>
+    <p class="sec-desc">교외 과학 축제에서 운영한 과학 부스를 디지털 탐구 콘텐츠로 재구성한 사례입니다.</p>
+    <div class="grid">
+      <div class="card reveal">
+        <span class="tag amber">교외 부스 · 2025 서울융합과학·수학·메이커 축제</span>
+        <h3>CSI 과학수사대 — 로마의 사라진 보석</h3>
+        <p>'CSI 수사대: 과학으로 추리하라' 방탈출 부스를, 학생이 직접 추리하며 과학 원리를 익히는 단일 HTML 웹앱으로 재구성한 프로젝트입니다. 학생은 수사관 아바타를 만들고, 대기압·편광·화학발광(루미놀)·광변색이라는 네 가지 과학 수사 기법을 단계별로 수행해 단서를 모으며 진범을 추리합니다. 실험 결과가 다음 단계의 단서로 이어지는 연역적 추리 구조로 설계하였고, 오프라인 부스의 일회성 제약을 넘어 반복 학습이 가능한 디지털 콘텐츠로 확장하였습니다.</p>
+        <div class="links">
+          <a class="btn" href="https://scienceisjo.github.io/portfolio/forensicscience.html" target="_blank" rel="noopener">
+            <span class="label">웹앱 열기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section 04 ===== -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-no">04</span>
+      <h2>바이브 코딩 수업 학생 산출물</h2>
+    </div>
+    <p class="sec-desc">학생이 직접 바이브 코딩의 주체가 되어, 과학 현상을 설명하는 시뮬레이션(모형)을 제작한 결과물입니다.</p>
+    <div class="grid two">
+      <div class="card reveal">
+        <span class="tag amber">학생 산출물</span>
+        <h3>열평형 시뮬레이션</h3>
+        <p>학생이 제작한 열평형 현상 설명 시뮬레이션입니다. (학생 산출물 2건)</p>
+        <div class="links">
+          <a class="btn" href="https://202610311haenuri.github.io/-/" target="_blank" rel="noopener">
+            <span class="label">산출물 1 보기</span><span class="arrow">→</span>
+          </a>
+          <a class="btn" href="https://yujinnoh0903.github.io/Thermal-Equilibrium-simulation-science/" target="_blank" rel="noopener">
+            <span class="label">산출물 2 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <span class="tag amber">학생 산출물</span>
+        <h3>홀로그램 시뮬레이션</h3>
+        <p>학생이 제작한 홀로그램 원리 설명 시뮬레이션입니다.</p>
+        <div class="links">
+          <a class="btn" href="https://khj1215.github.io/hlohlogram/" target="_blank" rel="noopener">
+            <span class="label">산출물 보기</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>해누리중학교 과학교사 조승재</b><br>
+    AI·디지털 기반 과학 강사요원 양성 직무연수 증빙자료
+  </footer>
+
+</div>
+
+<script>
+  // staggered reveal on scroll
+  const items=[...document.querySelectorAll('.reveal')];
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        const i=items.indexOf(e.target);
+        e.target.style.animationDelay=(Math.max(0,i%2)*0.08)+'s';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  items.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
