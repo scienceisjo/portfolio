@@ -288,7 +288,7 @@ body.bright #brightlayer{opacity:1}
 .cert-foot{font-family:'Cinzel';font-size:12px;color:#5a3a1f;letter-spacing:2px;margin-top:8px}
 @media print{body *{visibility:hidden}#cert,#cert *{visibility:visible}#cert{position:absolute;left:0;top:0;width:100%;margin:0}#brightlayer{display:none}}
 /* map world */
-.mapwrap{margin-top:10px}
+.mapwrap{margin-top:10px;position:relative}
 .mapview{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid rgba(201,164,76,.35);background:#0c0907 center/cover no-repeat;box-shadow:var(--shadow);touch-action:none}
 .player{position:absolute;width:42px;height:58px;transform:translate(-50%,-70%);z-index:5;filter:drop-shadow(0 4px 5px rgba(0,0,0,.7));transition:left .05s linear,top .05s linear;pointer-events:none}
 .player svg{width:100%;height:100%}
@@ -314,10 +314,11 @@ body.bright #brightlayer{opacity:1}
 @keyframes nbob{50%{transform:translateX(-50%) translateY(-4px)}}
 .mapprompt{min-height:46px;display:flex;justify-content:center;align-items:center;margin-top:10px}
 .mapmsg{font-family:'Song Myung';color:#e6c873;font-size:14px}
-.dpad{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px;user-select:none}
-.drow{display:flex;gap:6px}
-.dbtn{width:54px;height:48px;border-radius:10px;border:1px solid rgba(201,164,76,.4);background:linear-gradient(180deg,#3a2a1a,#2a1d12);color:#e6c873;font-size:18px;cursor:pointer;touch-action:none}
-.dbtn:active{background:linear-gradient(180deg,#e6c873,#c9a44c);color:#241704}
+.joy{position:absolute;width:96px;height:96px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(127,199,230,.18),rgba(20,40,60,.28));border:2px solid rgba(191,234,255,.55);box-shadow:0 0 18px rgba(90,170,230,.45);pointer-events:none;z-index:7;display:none}
+.joy.on{display:block}
+.joyk{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:radial-gradient(circle,rgba(220,245,255,.95),rgba(120,190,230,.7));box-shadow:0 0 14px rgba(150,215,255,.9)}
+.taptarget{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid #bfeaff;transform:translate(-50%,-50%);pointer-events:none;z-index:5;animation:tapr .55s ease-out forwards}
+@keyframes tapr{from{opacity:.9;transform:translate(-50%,-50%) scale(.4)}to{opacity:0;transform:translate(-50%,-50%) scale(1.4)}}
 footer{text-align:center;color:#8a7a5c;font-size:12.5px;margin-top:26px;font-family:'Song Myung';line-height:1.8}
 footer .made{color:var(--gold-br);font-size:13px}
 .modal{position:fixed;inset:0;z-index:60;background:rgba(8,5,2,.82);display:none;place-items:center;padding:18px;backdrop-filter:blur(2px)}
@@ -733,38 +734,63 @@ function renderMapWorld(){
   const npcs=(m.npcs||[]).map((n,idx)=>`<div class="npc" style="left:${n.x}%;top:${n.y}%" onclick="npcOpen(${i},${idx})"><div class="ntok">${n.cfg?mc(n.cfg):'📜'}</div><span class="nlabel">💬 ${n.name}</span></div>`).join('');
   const done=cluesCount();
   return `<div class="parch tight" style="margin-top:0"><div class="eyebrow">EXPLORE · 단서 ${done}/4</div><h2 class="tt">🗺️ ${m.name}</h2>
-    <p class="lead" style="font-size:13px">WASD·방향키 또는 아래 버튼으로 이동. <b>⮕ 포탈</b>에 닿으면 장소 이동, <b>🔬 지점</b>에서 <b>조사</b> 버튼으로 실험을 합니다.${i===0?' 모든 단서를 모으면 중앙 제단(⚖️)에서 범인을 지목하세요.':''}</p></div>
+    <p class="lead" style="font-size:13px"><b>바닥을 탭</b>하면 그곳으로 이동하고, <b>화면을 꾹 눌러 끌면</b> 그 자리에 <b>조이스틱</b>이 생겨 자유롭게 움직입니다. <b>⮕ 포탈</b>에 닿으면 장소 이동, <b>🔬 지점</b>에서 <b>조사</b>로 실험을 합니다.${i===0?' 단서를 모두 모으면 중앙 제단(⚖️)에서 범인을 지목하세요.':''} (PC: WASD·방향키)</p></div>
    <div class="mapwrap">
      <div class="mapview" id="mapview" style="background-image:url('${IMAGES[m.key]||''}')">
        ${portals}${verd}${spot}${npcs}
        <div class="player" id="player">${mc(D)}</div>
      </div>
+     <div class="joy" id="joy"><div class="joyk" id="joyk"></div></div>
      <div class="mapprompt" id="mapprompt"></div>
-     <div class="dpad">
-       <button class="dbtn up" aria-label="up">▲</button>
-       <div class="drow"><button class="dbtn left" aria-label="left">◀</button><button class="dbtn down" aria-label="down">▼</button><button class="dbtn right" aria-label="right">▶</button></div>
-     </div>
    </div>`;
 }
 function placePlayer(){const p=document.getElementById('player'); if(p&&MAP){p.style.left=MAP.x+'%';p.style.top=MAP.y+'%';}}
+function rp_pos(el,x,y){el.className='taptarget';el.style.left=x+'%';el.style.top=y+'%';}
 function mapTravel(to){SFX.play('portal');APP.mapI=to;saveState();renderRoot();}
 function mapClickPortal(idx){const m=WORLD[APP.mapI||0],p=m.portals[idx]; if(portalLocked(p)){mapMsg('🔒 이전 단서를 먼저 모으세요');return;} mapTravel(p.to);}
 function mapMsg(t){const pr=document.getElementById('mapprompt'); if(pr){pr.dataset.k='msg';pr.innerHTML='<span class="mapmsg">'+t+'</span>';}}
 function mapInit(){
   const view=document.getElementById('mapview'); if(!view) return;
+  const wrap=view.parentElement, joy=document.getElementById('joy'), joyk=document.getElementById('joyk');
   const m=WORLD[APP.mapI||0];
-  MAP={x:m.start[0],y:m.start[1],keys:{},cd:24,raf:0};
+  MAP={x:m.start[0],y:m.start[1],keys:{},joy:null,target:null,cd:24,raf:0};
   placePlayer(); bindMapKeys();
-  ['up','down','left','right'].forEach(dir=>{const b=view.parentElement.querySelector('.dbtn.'+dir); if(!b)return;
-    const on=e=>{e.preventDefault(); if(MAP)MAP.keys[dir]=true; try{b.setPointerCapture(e.pointerId);}catch(_){}};
-    const off=()=>{if(MAP)MAP.keys[dir]=false;};
-    b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointercancel',off); b.addEventListener('lostpointercapture',off);
-    b.addEventListener('contextmenu',ev=>ev.preventDefault());});
-  if(!window.__mapClear){window.__mapClear=true; const clr=()=>{if(MAP)MAP.keys={};}; window.addEventListener('blur',clr); document.addEventListener('visibilitychange',()=>{if(document.hidden)clr();});}
+  let drag=null; const THRESH=10, MAXR=46;
+  view.addEventListener('pointerdown',e=>{
+    drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,moved:false,
+      interactive:!!(e.target.closest&&e.target.closest('.portal,.npc,.spot,.player'))};
+  });
+  view.addEventListener('pointermove',e=>{
+    if(!drag||e.pointerId!==drag.id) return;
+    const dx=e.clientX-drag.sx, dy=e.clientY-drag.sy, len=Math.hypot(dx,dy);
+    if(!drag.moved && len>THRESH){ drag.moved=true; MAP.target=null; try{view.setPointerCapture(e.pointerId);}catch(_){}
+      const wr=wrap.getBoundingClientRect(); joy.style.left=(drag.sx-wr.left)+'px'; joy.style.top=(drag.sy-wr.top)+'px'; joy.classList.add('on'); }
+    if(drag.moved){ e.preventDefault();
+      const mag=Math.min(1,len/MAXR), ang=Math.atan2(dy,dx);
+      MAP.joy={x:Math.cos(ang)*mag,y:Math.sin(ang)*mag};
+      const kk=Math.min(MAXR,len); joyk.style.transform=`translate(${Math.cos(ang)*kk}px,${Math.sin(ang)*kk}px)`;
+    }
+  });
+  const end=e=>{
+    if(!drag||e.pointerId!==drag.id) return;
+    if(!drag.moved && !drag.interactive){
+      const r=view.getBoundingClientRect(), w=m.walk;
+      let tx=(drag.sx-r.left)/r.width*100, ty=(drag.sy-r.top)/r.height*100;
+      MAP.target={x:Math.max(w[0],Math.min(w[2],tx)), y:Math.max(w[1],Math.min(w[3],ty))};
+      const rp=document.createElement('div'); rp_pos(rp,MAP.target.x,MAP.target.y); view.appendChild(rp); setTimeout(()=>rp.remove(),560);
+    }
+    MAP.joy=null; joy.classList.remove('on'); joyk.style.transform='translate(0,0)'; drag=null;
+  };
+  view.addEventListener('pointerup',end); view.addEventListener('pointercancel',end);
+  if(!window.__mapClear){window.__mapClear=true; const clr=()=>{if(MAP){MAP.keys={};MAP.joy=null;}}; window.addEventListener('blur',clr); document.addEventListener('visibilitychange',()=>{if(document.hidden)clr();});}
   function loop(){
     if(!view.isConnected){cancelAnimationFrame(MAP.raf);return;}
-    const spd=0.6; let dx=0,dy=0;
-    if(MAP.keys.up)dy-=spd*1.7; if(MAP.keys.down)dy+=spd*1.7; if(MAP.keys.left)dx-=spd; if(MAP.keys.right)dx+=spd;
+    const spd=0.62; let dx=0,dy=0,kx=0,ky=0;
+    if(MAP.keys.up)ky-=1; if(MAP.keys.down)ky+=1; if(MAP.keys.left)kx-=1; if(MAP.keys.right)kx+=1;
+    if(kx||ky){ MAP.target=null; dx=kx*spd; dy=ky*spd*1.55; }
+    else if(MAP.joy){ dx=MAP.joy.x*spd*1.6; dy=MAP.joy.y*spd*1.6*1.45; }
+    else if(MAP.target){ const ddx=MAP.target.x-MAP.x, ddy=MAP.target.y-MAP.y, dist=Math.hypot(ddx,ddy);
+      if(dist<0.8){MAP.target=null;} else { const step=Math.min(spd*1.4,dist); dx=ddx/dist*step; dy=ddy/dist*step; } }
     if(dx||dy){const w=m.walk; MAP.x=Math.max(w[0],Math.min(w[2],MAP.x+dx)); MAP.y=Math.max(w[1],Math.min(w[3],MAP.y+dy)); placePlayer();}
     if(MAP.cd>0)MAP.cd--;
     checkZones(m);
