@@ -295,6 +295,7 @@ footer .made{color:var(--gold-br);font-size:13px}
 /* ============ 실험 영상 설정 (유튜브 미등록 주소 그대로 붙여넣기) ============ */
 const VIDEOS = {
   candle:  'https://youtube.com/shorts/8OaTTFxd3ak',  // 물을 빨아올리는 양초
+  polar:   'https://youtube.com/shorts/6Axh0IwCLA4',  // 편광 필름
   luminol: 'https://youtube.com/shorts/tNPP6PPtJFM',  // 루미놀 반응
   photo:   'https://youtube.com/shorts/wli0kcm4EUk',  // 광변색(시광) 안료
 };
@@ -726,6 +727,7 @@ function renderPolar(){
       <div class="gauge"><div class="v" id="gTr">적음</div><div class="l">빛 통과량</div></div></div>
     <div class="dialwrap"><input type="range" min="0" max="90" value="70" id="dial" oninput="startPolar(this.value)"></div>
     <div id="polafter"></div>
+    <div style="margin-top:18px"><div class="hint" style="margin-bottom:4px">🎬 실제 실험 영상</div>${videoEmbed(VIDEOS.polar,'편광 필름 실험 영상')}</div>
   </div>`;
 }
 function startPolar(v){
@@ -882,6 +884,26 @@ function loadState(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY)||'nul
   return true;}catch(e){return false;}}
 function resetState(){if(!confirm('모든 진행 기록(예측·단서·캐릭터)을 지우고 처음부터 시작할까요?'))return;try{localStorage.removeItem(SAVE_KEY);}catch(e){}location.reload();}
 /* ============ CERTIFICATE ============ */
+async function certSaveImage(){
+  if(!IMAGES.certificate){ window.print(); return; }
+  const W=1280,H=720, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const ctx=cv.getContext('2d');
+  try{ await document.fonts.load("700 64px 'Nanum Brush Script'"); await document.fonts.load("22px 'Song Myung'"); await document.fonts.load("700 18px 'Cinzel'"); await document.fonts.ready; }catch(e){}
+  const img=new Image();
+  img.onload=()=>{
+    ctx.drawImage(img,0,0,W,H);
+    const cx=W/2; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='#9a6a2a'; ctx.font="700 18px 'Cinzel', serif"; ctx.fillText('CERTIFICATE OF HONOR · ROMA',cx,250);
+    ctx.fillStyle='#5a3a1f'; ctx.font="22px 'Song Myung', serif";
+    ctx.fillText('로마 제국 황제의 이름으로',cx,290); ctx.fillText('이 표창장을 수여함',cx,320);
+    ctx.fillStyle='#7e1f1f'; ctx.font="700 64px 'Nanum Brush Script', cursive"; ctx.fillText('수사관 '+(D.name||'님'),cx,378);
+    ctx.fillStyle='#6a4a2a'; ctx.font="18px 'Song Myung', serif";
+    ctx.fillText('‘솔리스의 보석’을 되찾아',cx,430); ctx.fillText('로마의 빛을 지킨 공로를 기림',cx,456);
+    try{const a=document.createElement('a'); a.download='표창장_'+(D.name||'수사관')+'.png'; a.href=cv.toDataURL('image/png'); a.click();}
+    catch(e){alert('이미지 저장에 실패했어요. 인쇄 기능을 이용해 주세요.');}
+  };
+  img.onerror=()=>alert('표창장 배경을 불러오지 못했어요. 인쇄 기능을 이용해 주세요.');
+  img.src=IMAGES.certificate;
+}
 function renderCertificate(){
   if(IMAGES.certificate){
     return `<div class="cert framed" id="cert" style="background-image:url('${IMAGES.certificate}')">
@@ -891,7 +913,7 @@ function renderCertificate(){
         <div class="cf-name">수사관 ${esc(D.name)}</div>
         <div class="cf-desc">‘솔리스의 보석’을 되찾아<br>로마의 빛을 지킨 공로를 기림</div>
       </div></div>
-    <div class="btnrow" style="justify-content:center"><button class="btn gold" onclick="window.print()">🖨️ 표창장 인쇄 / 저장</button></div>`;
+    <div class="btnrow" style="justify-content:center"><button class="btn gold" onclick="certSaveImage()">🖼️ 이미지로 저장</button><button class="btn ghost" onclick="window.print()">🖨️ 인쇄</button></div>`;
   }
   return `<div class="cert" id="cert"><div class="cert-inner">
     <div class="cert-seal">SPQR</div>
