@@ -313,6 +313,7 @@ footer .made{color:var(--gold-br);font-size:13px}
 .modal .box{max-width:780px;width:100%;max-height:86vh;overflow:auto}
 .modal .x{position:sticky;top:0;float:right;background:#7e1f1f;color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:18px;font-family:'Cinzel'}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="brightlayer"></div>
@@ -1161,16 +1162,19 @@ function renderRoot(){
 loadState();
 if(APP.stage==='app') $('#tabs').style.display='flex';
 renderRoot();
+// ===== 방문자 카운터 (Supabase) =====
+const SUPABASE_URL  = 'https://vbvtnmnodeoocbbjauap.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_ErWOtUHnPmpi-_895tj7ww_IwEZmAPN';
+const _sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
 async function loadVisits(){
-  const el=document.getElementById('visits'); if(!el) return;
+  const el=document.getElementById('visits'); if(!el||!_sb){ if(el)el.style.display='none'; return; }
   try{
     const first=!localStorage.getItem('csi_counted');
-    const r=await fetch('/api/count'+(first?'?hit=1':''),{cache:'no-store'});
-    if(!r.ok) throw 0;
-    const d=await r.json();
+    const fn=first?'increment_counter':'get_counter';
+    const {data,error}=await _sb.rpc(fn,{counter_name:'csi-rome'});
+    if(error) throw error;
     if(first) localStorage.setItem('csi_counted','1');
-    if(typeof d.count==='number') el.textContent='👣 '+d.count.toLocaleString()+'명';
-    else el.style.display='none';
+    el.textContent='👣 '+Number(data).toLocaleString()+'명';
   }catch(e){ el.style.display='none'; }
 }
 loadVisits();
